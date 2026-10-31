@@ -2,7 +2,7 @@
 
 个人博客，线上地址：**<https://fortune-arterial.github.io>**
 
-以 [mistatle.github.io](https://mistatle.github.io/) 的编辑风格为参考，但代码、布局与文案都是独立实现的。目前**还没有发布任何文章**：骨架、页面、搜索、知识地图与部署流程已经就位，内容留待之后填写。
+目前**还没有发布任何文章**：骨架、页面、搜索、知识地图与部署流程已经就位，内容留待之后填写。
 
 推送 `main` 即自动构建并发布到 GitHub Pages。
 
