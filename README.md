@@ -1,8 +1,10 @@
 # Fortune Arterial
 
-个人博客框架，目标地址：**<https://fortune-arterial.github.io>**
+个人博客，线上地址：**<https://fortune-arterial.github.io>**
 
 以 [mistatle.github.io](https://mistatle.github.io/) 的编辑风格为参考，但代码、布局与文案都是独立实现的。目前**还没有发布任何文章**：骨架、页面、搜索、知识地图与部署流程已经就位，内容留待之后填写。
+
+推送 `main` 即自动构建并发布到 GitHub Pages。
 
 ![首页预览](docs/preview.png)
 
@@ -15,7 +17,8 @@
 | 全文搜索、明暗主题、RSS、sitemap、SEO | 已完成 |
 | 知识地图（15 个概念、7 个学科） | 数据与交互已完成，节点等待笔记点亮 |
 | 文章 | **0 篇**（示例文章在 `examples/posts/`，不会被构建） |
-| GitHub Actions 部署 | 已完成，等待推送到 GitHub 仓库 |
+| GitHub Actions 部署 | 已完成，线上运行中 |
+| 线上地址 | <https://fortune-arterial.github.io> |
 
 ## 技术栈
 
