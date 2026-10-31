@@ -1,0 +1,23 @@
+{
+  "name": "fortune-arterial-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal notebook of Fortune Arterial — a static site for GitHub Pages.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node src/build.mjs",
+    "dev": "node scripts/dev.mjs",
+    "preview": "node scripts/serve.mjs",
+    "new": "node scripts/new-post.mjs"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.11.1",
+    "katex": "^0.16.22",
+    "markdown-it": "^14.1.0",
+    "markdown-it-container": "^4.0.0"
+  }
+}
