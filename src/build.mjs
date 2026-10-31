@@ -61,11 +61,11 @@ function heroArt() {
       <path class="art-star" d="M230 100v260M115 165l230 130M345 165 115 295"></path>
       <circle class="art-core" cx="230" cy="230" r="7"></circle>
       <circle class="art-halo" cx="230" cy="230" r="22"></circle>
-      <text class="art-label" x="52" y="78">H(X)</text>
-      <text class="art-label" x="332" y="78">∂/∂θ</text>
-      <text class="art-label" x="52" y="398">P(x)</text>
-      <text class="art-label" x="398" y="398">λ</text>
-      <text class="art-label art-label-center" x="230" y="278" text-anchor="middle">arg min</text>
+      <text class="art-label" x="52" y="78">lim</text>
+      <text class="art-label" x="332" y="78">f′(x)</text>
+      <text class="art-label" x="52" y="398">∫ f dx</text>
+      <text class="art-label" x="398" y="398">det A</text>
+      <text class="art-label art-label-center" x="230" y="278" text-anchor="middle">ε–δ</text>
     </svg>
     <span class="art-index">FIG. 01</span>
     <span class="art-corner art-corner-tl"></span>
@@ -74,9 +74,9 @@ function heroArt() {
     <span class="art-corner art-corner-br"></span>
   </div>
   <div class="art-legend">
-    <span><i class="legend-line"></i>结构</span>
-    <span><i class="legend-line"></i>机制</span>
-    <span><i class="legend-line"></i>边界</span>
+    <span><i class="legend-line"></i>分析</span>
+    <span><i class="legend-line"></i>代数</span>
+    <span><i class="legend-line"></i>几何</span>
   </div>
 </div>`;
 }
@@ -124,7 +124,7 @@ function hero(posts) {
 }
 
 function ticker() {
-  const items = ["STRUCTURE", "MECHANISM", "BOUNDARY"];
+  const items = ["LIMIT", "DERIVATIVE", "INTEGRAL", "MATRIX", "VECTOR", "CURVE"];
   const chunk = items.map((item) => `<span class="ticker-item">${item}</span><span class="ticker-star" aria-hidden="true">✳</span>`).join("");
   return `<div class="ticker" aria-hidden="true"><div class="ticker-track">${chunk.repeat(4)}</div></div>`;
 }
@@ -133,21 +133,21 @@ function principles() {
   const items = [
     {
       n: "01",
-      label: "STRUCTURE",
-      title: "先问结构",
-      body: "结论依赖什么？在定义、假设与推导中，真正决定结果的是哪一步。把模糊的直觉拆成可以检验的条件。",
+      label: "DEFINITION",
+      title: "先问定义",
+      body: "对象是什么？量词、条件与记号必须先说清楚。很多争论其实源于把两个不同的定义当成了同一个。",
     },
     {
       n: "02",
-      label: "MECHANISM",
-      title: "再问机制",
-      body: "方法为何有效？关注不变量、信息流与计算步骤，而不只是最终公式。能复述过程，才算真正理解。",
+      label: "THEOREM",
+      title: "再问定理",
+      body: "在哪些假设下，结论成立？把条件逐条拆开，找出真正被用到的那一条，才算读懂定理。",
     },
     {
       n: "03",
-      label: "BOUNDARY",
-      title: "最后问边界",
-      body: "它何时失效？用反例、实验与来源标出适用范围。一个不说明边界的结论，通常也说明不了什么。",
+      label: "PROOF",
+      title: "最后看证明",
+      body: "证明如何从假设走到结论？每一步用了什么定义或前一条定理？能否举出反例说明条件不可省？",
     },
   ];
 
@@ -179,7 +179,7 @@ function emptyLatest() {
     <div class="empty-latest-copy">
       <p class="empty-kicker">THE FIRST NOTE</p>
       <h3>还没有笔记，但地图已经铺好。</h3>
-      <p>内容正在准备中。第一篇文章写下来之后，会出现在这里。</p>
+      <p>数学分析的极限、高等代数的线性映射、解析几何的二次曲线，都在图上等待第一篇笔记。</p>
     </div>
     <a class="empty-latest-link" href="${url("/map/")}">先看看知识地图 ${icon("arrowRight", 16)}</a>
   </div>`;
@@ -330,7 +330,7 @@ ${
 
   return layout({
     title: "笔记",
-    description: "数学、算法与人工智能的笔记：关注结构、机制与边界。",
+    description: "数学分析、高等代数与解析几何的笔记：从定义、定理到证明与反例。",
     path: "/notes/",
     active: "notes",
     content,
@@ -504,7 +504,7 @@ function mapPage(posts) {
 
   return layout({
     title: "知识地图",
-    description: "一张关于数学、算法与智能的概念地图：笔记之间的依赖、延伸与应用。",
+    description: "一张关于数学分析、高等代数与解析几何的概念地图：笔记之间的依赖、延伸与应用。",
     path: "/map/",
     active: "map",
     content,
@@ -536,7 +536,7 @@ function aboutPage(page, posts) {
         ${brandMark(76)}
         <span class="portrait-coord">ONLINE / UTC+8</span>
         <span class="portrait-name">${escapeHtml(config.wordmark)}</span>
-        <span class="portrait-role">MATH · ALGO · AI</span>
+        <span class="portrait-role">ANALYSIS · ALGEBRA · GEOMETRY</span>
         <span class="portrait-line"></span>
         <span class="portrait-year">EST. ${escapeHtml(config.established)}</span>
       </div>
@@ -552,7 +552,7 @@ function aboutPage(page, posts) {
     <aside class="about-aside">
       <div class="fact">
         <p class="fact-label">现在</p>
-        <p>读论文，写笔记，维护这个站点。关注概率、信息与学习系统之间的连接。</p>
+        <p>读数学，写笔记，维护这个站点。最近在整理极限、线性映射与二次曲线之间的连接。</p>
       </div>
       <div class="fact">
         <p class="fact-label">联系</p>
@@ -585,11 +585,9 @@ function aboutPage(page, posts) {
 }
 
 const tagLabels = {
-  information: "信息论",
-  optimization: "优化",
-  statistics: "统计",
-  rl: "强化学习",
-  deep: "深度学习",
+  analysis: "数学分析",
+  algebra: "高等代数",
+  geometry: "解析几何",
   tool: "工具",
 };
 
@@ -653,7 +651,7 @@ function resourcesPage() {
 
   return layout({
     title: "资源",
-    description: "数学、算法与写作工具的私人书桌：教材、课程、博客与工具。",
+    description: "数学分析、高等代数与解析几何的书桌：教材、几何工具与写作工具。",
     path: "/resources/",
     active: "resources",
     content,

@@ -57,6 +57,10 @@
   --syn-fn: #1d4ed8;
   --syn-attr: #b91c1c;
 
+  --tone-analysis: #2d55cc;
+  --tone-algebra: #a9472f;
+  --tone-geometry: #1a6f62;
+
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
     "Noto Sans SC", "Microsoft YaHei", sans-serif;
   --font-serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", "Noto Serif SC",
@@ -93,49 +97,20 @@
   --syn-com: #6f7682;
   --syn-fn: #8fb2ff;
   --syn-attr: #ff9aa2;
+
+  --tone-analysis: #92abff;
+  --tone-algebra: #f0957d;
+  --tone-geometry: #63cbb9;
 }
 
-.cat-probability {
-  --cat: #2d55cc;
+.cat-analysis {
+  --cat: var(--tone-analysis);
 }
-.cat-information {
-  --cat: #1d7a6c;
+.cat-algebra {
+  --cat: var(--tone-algebra);
 }
-.cat-statistics {
-  --cat: #8a5c12;
-}
-.cat-optimization {
-  --cat: #a9472f;
-}
-.cat-rl {
-  --cat: #99345f;
-}
-.cat-learning {
-  --cat: #5d6d1f;
-}
-.cat-deep {
-  --cat: #5f43c9;
-}
-[data-theme="dark"] .cat-probability {
-  --cat: #92abff;
-}
-[data-theme="dark"] .cat-information {
-  --cat: #63cbb9;
-}
-[data-theme="dark"] .cat-statistics {
-  --cat: #e6b76a;
-}
-[data-theme="dark"] .cat-optimization {
-  --cat: #f0957d;
-}
-[data-theme="dark"] .cat-rl {
-  --cat: #ec93bd;
-}
-[data-theme="dark"] .cat-learning {
-  --cat: #b5c96a;
-}
-[data-theme="dark"] .cat-deep {
-  --cat: #b49bff;
+.cat-geometry {
+  --cat: var(--tone-geometry);
 }
 
 *,
@@ -1457,6 +1432,7 @@ svg {
 
 .post-grid > .prose {
   grid-area: main;
+  min-width: 0;
 }
 .prose {
   max-width: 740px;
@@ -1569,6 +1545,7 @@ svg {
   text-align: center;
 }
 .math-display {
+  max-width: 100%;
   margin: 1.6em 0;
   padding: 10px 0;
   overflow-x: auto;
@@ -1581,6 +1558,7 @@ svg {
   font-size: 1.04em;
 }
 .table-wrap {
+  max-width: 100%;
   margin: 2em 0;
   overflow-x: auto;
   border: 1px solid var(--line);
@@ -1823,7 +1801,10 @@ svg {
   text-align: right;
 }
 .pager-link.is-empty {
-  opacity: 0.45;
+  opacity: 1;
+}
+.pager-link.is-empty span {
+  color: var(--muted);
 }
 .pager-link.is-empty strong {
   display: none;
@@ -3043,7 +3024,7 @@ body.search-open {
     grid-column: 1 / -1;
   }
   .post-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "side" "main";
     gap: 32px;
     padding-top: 40px;
@@ -3213,10 +3194,9 @@ body.search-open {
     align-items: stretch;
   }
   .filters {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 4px;
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    row-gap: 6px;
+    padding-bottom: 2px;
   }
   .filters::-webkit-scrollbar {
     display: none;

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Personal notebook of Fortune Arterial — a static site for GitHub Pages.",
+  "description": "Personal mathematics notebook of Fortune Arterial — mathematical analysis, higher algebra and analytic geometry.",
   "engines": {
     "node": ">=20"
   },

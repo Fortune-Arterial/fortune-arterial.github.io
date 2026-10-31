@@ -1,9 +1,15 @@
 # Content guide
 
-Posts live in `content/posts/*.md` and are built into static pages. The seven
-finished examples in `examples/posts/` are intentionally **not** built; copy one
-into `content/posts/` to publish it. The filename
-becomes the URL: `content/posts/typical-set.md` → `/notes/typical-set/`.
+Posts live in `content/posts/*.md` and are built into static pages. The filename
+becomes the URL:
+
+```
+content/posts/epsilon-delta.md  →  /notes/epsilon-delta/
+```
+
+The site currently publishes three starter notes: one each in mathematical
+analysis, higher algebra and analytic geometry. They are meant to be rewritten,
+extended or replaced.
 
 ## Front matter
 
@@ -11,13 +17,13 @@ Every post starts with YAML front matter:
 
 ```yaml
 ---
-title: "典型集与 AEP：概率质量为何集中在薄壳上"
-subtitle: "从渐近均分性理解高维概率的几何直觉"
-date: "2026-01-21"
-category: "信息论"
-tags: ["典型集", "AEP", "信息论"]
-concepts: ["typical-set", "entropy"]
-excerpt: "一句话摘要，会出现在列表页、搜索结果与社交卡片中。"
+title: "ε–δ 到底在说什么"
+subtitle: "把「无限接近」翻译成量词顺序"
+date: "2026-10-28"
+category: "数学分析"
+tags: ["极限", "ε–δ", "量词", "连续"]
+concepts: ["limit", "derivative"]
+excerpt: "极限的定义难，不难在 ε 和 δ，而难在「对任意」与「存在」的先后顺序。"
 draft: false
 ---
 ```
@@ -25,21 +31,28 @@ draft: false
 - `title` (required): plain text, no Markdown.
 - `subtitle` (optional): one line, shown under the title on the post page.
 - `date` (required): `YYYY-MM-DD`, quoted.
-- `category` (required): one of 信息论 / 统计 / 优化 / 强化学习 / 学习理论 / 深度学习 / 概率论.
+- `category` (required): one of 数学分析 / 高等代数 / 解析几何.
 - `tags` (optional): 2–4 short Chinese or English tags.
 - `concepts` (optional): IDs from the knowledge map. See `src/data/map.mjs`.
   The **first** concept is the post's anchor and lights up that node on the map;
-  the rest are used for related reading. Current IDs: `law-large-numbers`, `typical-set`, `entropy`, `kl-divergence`,
-  `mle`, `score-matching`, `sgd`, `convex-optimization`, `mdp`,
-  `policy-gradient`, `littlestone`, `vc-dimension`, `attention`, `vae`, `sigreg`.
+  the rest are used for related reading. Current IDs:
+
+  | 学科 | 概念 ID |
+  | --- | --- |
+  | 数学分析 | `limit`, `derivative`, `mvt`, `integral`, `series` |
+  | 高等代数 | `linear-space`, `linear-map`, `matrix`, `eigen`, `quadratic-form` |
+  | 解析几何 | `vector`, `line-plane`, `conic`, `quadric`, `curvature` |
+
 - `excerpt` (required): 1–2 sentences, 40–90 Chinese characters.
 - `draft: true` excludes the post from the build.
 
 ## Voice
 
 - Write in Chinese, first person, precise and unhurried. No hype, no "众所周知".
-- Every piece should answer three questions: **结构** (what does the conclusion
-  depend on?), **机制** (why does the method work?), **边界** (when does it fail?).
+- Every piece should answer three questions: **定义** (what is the object, and
+  are the quantifiers and hypotheses clear?), **定理/证明** (what follows from
+  what, and where is the key step?), **边界** (when does it fail? is there a
+  counterexample?).
 - Prefer a concrete example or derivation over a list of facts.
 - End with a short "边界" or "什么时候会失效" section. Honesty is the house style.
 
@@ -55,6 +68,7 @@ draft: false
 ## Math and code
 
 - Inline math: `$x_t$`. Display math: `$$ ... $$` on its own lines.
+- KaTeX renders at build time, so formulas appear even with JavaScript disabled.
 - Fenced code blocks with a language tag are highlighted and get a copy button.
 - Callouts:
 

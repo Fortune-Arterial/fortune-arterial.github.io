@@ -8,7 +8,7 @@ if (!slug) {
 用法: npm run new -- <slug> ["标题"]
 
 示例:
-  npm run new -- scaling-laws "缩放定律的边界"
+  npm run new -- epsilon-delta "ε–δ 到底在说什么"
   npm run new -- my-note
 
 slug 会成为 URL: content/posts/<slug>.md → /notes/<slug>/
@@ -18,7 +18,7 @@ slug 会成为 URL: content/posts/<slug>.md → /notes/<slug>/
 }
 
 if (!/^[a-z0-9][a-z0-9-]*[a-z0-9]$/.test(slug)) {
-  console.error("slug 只能包含小写字母、数字和连字符，例如 typical-set。");
+  console.error("slug 只能包含小写字母、数字和连字符，例如 epsilon-delta。");
   process.exit(1);
 }
 
@@ -37,7 +37,7 @@ const template = `---
 title: "${title.replace(/"/g, '\\"')}"
 subtitle: ""
 date: "${date}"
-category: "信息论"
+category: "数学分析"
 tags: []
 concepts: []
 excerpt: "用一两句话说明这篇笔记想回答的问题。"
@@ -48,17 +48,17 @@ draft: true
 
 这里写清楚要回答的问题，以及它为什么值得回答。
 
-## 结构
+## 定义
 
-结论依赖哪些定义与假设？
+对象是什么？量词、条件与记号是否说清楚了？
 
-## 机制
+## 定理与证明
 
-方法为什么有效？
+在哪些假设下，什么结论成立？证明的每一步怎么接上？
 
 ## 边界
 
-它在什么条件下失效？
+它在什么条件下失效？有没有反例？
 
 ## 参考文献
 
