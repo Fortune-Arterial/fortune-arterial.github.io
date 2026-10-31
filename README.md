@@ -64,7 +64,7 @@ socials: [
 
 需要你补充的：
 
-- [ ] `site.config.mjs` 中的 `author.email`（留空时页脚显示 GitHub；填上后显示邮箱）
+- [ ] `site.config.mjs` 中的 `author.email`（留空时页脚显示 GitHub；填上后显示邮箱）与 `author.location`（关于页的时区/坐标可一并调整）
 - [ ] `content/pages/about.md` 里的自我介绍（现在是通用文案）
 - [ ] `src/data/resources.mjs` 里的资源清单（现在是起始版本）
 - [ ] `public/og.png` 社交分享卡片（可换成自己的设计，1200×630）

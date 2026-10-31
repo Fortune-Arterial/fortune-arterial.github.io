@@ -81,7 +81,7 @@ export const concepts = [
     en: "Typical Set",
     disciplines: ["probability", "information"],
     summary:
-      "在高维中，几乎全部概率质量集中在一个大小约为 2^{nH} 的薄壳上。",
+      "在高维中，几乎全部概率质量集中在一个指数级大小、总概率接近 1 的薄壳上。",
     x: 218,
     y: 240,
   },

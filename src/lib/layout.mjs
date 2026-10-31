@@ -60,7 +60,7 @@ function searchModal() {
       <input type="search" data-search-input placeholder="搜索笔记、概念、标签…" autocomplete="off" spellcheck="false" aria-label="搜索笔记">
       <kbd>ESC</kbd>
     </div>
-    <div class="search-results" data-search-results>
+    <div class="search-results" data-search-results aria-live="polite">
       <p class="search-hint">输入关键词开始搜索。支持标题、标签与正文内容。</p>
     </div>
     <div class="search-footer">

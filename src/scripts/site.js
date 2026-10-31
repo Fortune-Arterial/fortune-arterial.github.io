@@ -129,8 +129,6 @@
   const searchCount = modal ? $("[data-search-count]", modal) : null;
   let searchIndex = null;
   let searchLoading = false;
-  let searchError = false;
-  let results = [];
   let activeResult = -1;
   let lastFocused = null;
 
@@ -250,15 +248,13 @@
   async function ensureSearchIndex() {
     if (searchIndex || searchLoading) return;
     searchLoading = true;
-    searchError = false;
     if (searchResults) searchResults.innerHTML = '<p class="search-hint">正在载入索引…</p>';
     try {
       const response = await fetch(modal.dataset.searchIndex, { headers: { Accept: "application/json" } });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       searchIndex = await response.json();
       renderSearch(searchInput?.value || "");
-    } catch (error) {
-      searchError = true;
+    } catch {
       if (searchResults) {
         searchResults.innerHTML =
           '<p class="search-hint">搜索索引加载失败。请确认页面是通过本地服务器或 GitHub Pages 打开的。</p>';
