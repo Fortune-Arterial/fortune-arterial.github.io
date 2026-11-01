@@ -268,9 +268,8 @@ function notesPage(posts) {
   const content = `<section class="page-hero">
   <div class="wrap">
     <p class="page-kicker"><span>NOTES</span> / 笔记</p>
-    <div class="page-hero-grid">
+    <div class="page-hero-grid is-single">
       <h1 class="page-title">笔记<span class="page-title-count">${String(posts.length).padStart(2, "0")}</span></h1>
-      <p class="page-lede">${posts.length ? "按时间倒序排列。没有标签墙，也没有分页器；用上面的筛选和搜索找到你关心的部分。" : "这里会按时间倒序排列所有笔记。现在还没有内容，第一篇文章正在酝酿。"}</p>
     </div>
   </div>
 </section>
@@ -494,9 +493,7 @@ function aboutPage(page, posts) {
   <div class="wrap about-hero-grid">
     <div>
       <p class="page-kicker"><span>ABOUT</span> / 关于</p>
-      <h1 class="page-title">关于</h1>
-      <p class="page-lede">${escapeHtml(page.subtitle || config.author.bio)}</p>
-      <p class="about-hero-note">写作、设计与代码，是同一件事的不同侧面。</p>
+      <h1 class="about-greeting">你好，我是<span class="about-name">${escapeHtml(config.author.name.split(" ")[0])}</span></h1>
     </div>
     <div class="about-portrait" aria-hidden="true">
       <div class="portrait-frame">
@@ -519,7 +516,7 @@ function aboutPage(page, posts) {
     <aside class="about-aside">
       <div class="fact">
         <p class="fact-label">现在</p>
-        <p>读数学，写笔记，维护这个站点。最近在整理极限、线性映射与二次曲线之间的连接。</p>
+        <p>学数学，写笔记，正在全力备考。</p>
       </div>
       <div class="fact">
         <p class="fact-label">联系</p>
@@ -544,7 +541,7 @@ function aboutPage(page, posts) {
 
   return layout({
     title: "关于",
-    description: `${config.author.name} 的个人笔记：为什么写，写什么，以及这个站点如何构建。`,
+    description: `${config.author.name} 的个人笔记：记录数学学习、笔记与备考过程中的内容。`,
     path: "/about/",
     active: "about",
     content,
@@ -590,31 +587,15 @@ function resourcesPage() {
   const content = `<section class="page-hero">
   <div class="wrap">
     <p class="page-kicker"><span>LIBRARY</span> / 资源</p>
-    <div class="page-hero-grid">
+    <div class="page-hero-grid is-single">
       <h1 class="page-title">资源</h1>
-      <p class="page-lede">一些常被反复查阅的公开资源。这份清单还是起始版本，之后会慢慢换成更适合自己的书桌。</p>
     </div>
   </div>
 </section>
 <section class="section resources-section">
   <div class="wrap">${groups}</div>
 </section>
-<section class="closing closing-small">
-  <div class="wrap closing-inner">
-    <div class="closing-copy">
-      <p class="section-label"><span>NOTE</span>关于这份清单</p>
-      <h2>少而<em>常用</em>。</h2>
-      <p>清单会随阅读缓慢更新。如果有一本你觉得应该在这里，欢迎告诉我。</p>
-    </div>
-    <a class="button button-solid" href="${
-      config.author.email
-        ? `mailto:${escapeHtml(config.author.email)}`
-        : "https://github.com/fortune-arterial"
-    }"${config.author.email ? "" : ' target="_blank" rel="noopener me"'}>${
-      config.author.email ? "写信推荐" : "在 GitHub 推荐"
-    } ${icon("arrowRight", 17)}</a>
-  </div>
-</section>`;
+`;
 
   return layout({
     title: "资源",

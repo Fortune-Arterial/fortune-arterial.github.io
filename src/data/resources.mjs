@@ -5,34 +5,6 @@ export const resourceGroups = [
     en: "MATHEMATICAL ANALYSIS",
     note: "从 ε–δ 到一致收敛，几本适合反复翻、每次只读一章的书。",
     items: [
-      {
-        title: "Principles of Mathematical Analysis",
-        by: "Walter Rudin",
-        desc: "分析的标准参考。证明紧凑，适合第二遍读时逐行补上被省略的细节。",
-        href: "https://www.mheducation.com/highered/product/principles-mathematical-analysis-rudin/M9780070542358.html",
-        tag: "analysis",
-      },
-      {
-        title: "Analysis I",
-        by: "Terence Tao",
-        desc: "从构造实数开始，把 ε–δ 写得很慢；适合第一次认真学分析的人。",
-        href: "https://terrytao.wordpress.com/books/analysis-i/",
-        tag: "analysis",
-      },
-      {
-        title: "Calculus",
-        by: "Michael Spivak",
-        desc: "微积分与分析之间的桥。习题比正文更重要，很多反例藏在里面。",
-        href: "https://www.mathpop.com/",
-        tag: "analysis",
-      },
-      {
-        title: "Understanding Analysis",
-        by: "Stephen Abbott",
-        desc: "把定义的动机讲在前面，适合在证明卡住时回头补直觉。",
-        href: "https://link.springer.com/book/10.1007/978-1-4939-2712-8",
-        tag: "analysis",
-      },
     ],
   },
   {
@@ -41,34 +13,6 @@ export const resourceGroups = [
     en: "HIGHER ALGEBRA",
     note: "把线性空间、线性映射与矩阵放在一起看，而不是先背矩阵运算。",
     items: [
-      {
-        title: "Linear Algebra Done Right",
-        by: "Sheldon Axler",
-        desc: "从线性映射出发，尽量不用行列式。适合把“矩阵”重新理解成映射的坐标表示。",
-        href: "https://linear.axler.net/",
-        tag: "algebra",
-      },
-      {
-        title: "Linear Algebra",
-        by: "Friedberg, Insel & Spence",
-        desc: "把线性空间、对偶与标准形讲得完整，适合作为一门长课的教材。",
-        href: "https://www.pearson.com/en-us/subject-catalog/p/linear-algebra/P200000006252",
-        tag: "algebra",
-      },
-      {
-        title: "Algebra",
-        by: "Michael Artin",
-        desc: "把代数讲成结构之间的关系，适合在学完线性代数之后回头读。",
-        href: "https://www.pearson.com/store/p/algebra/P100000840438",
-        tag: "algebra",
-      },
-      {
-        title: "Advanced Linear Algebra",
-        by: "Steven Roman",
-        desc: "从线性空间走到对偶、标准形与双线性形式，适合作为第二本代数书。",
-        href: "https://link.springer.com/book/10.1007/978-0-387-72831-5",
-        tag: "algebra",
-      },
     ],
   },
   {
@@ -77,61 +21,19 @@ export const resourceGroups = [
     en: "ANALYTIC GEOMETRY",
     note: "先建立图形直觉，再用坐标与方程把它算出来。",
     items: [
-      {
-        title: "解析几何（第五版）",
-        by: "吕林根、许子道",
-        desc: "中文解析几何的常用教材，向量、二次曲线与二次曲面都覆盖到了。",
-        href: "https://mall.hep.com.cn/goods-49054.html",
-        tag: "geometry",
-      },
-      {
-        title: "Introduction to Geometry",
-        by: "H. S. M. Coxeter",
-        desc: "用变换与群的观点看初等几何，适合补上“为什么这样分类”的一层。",
-        href: "https://www.wiley.com/en-us/Introduction+to+Geometry%2C+2nd+Edition-p-9780471504580",
-        tag: "geometry",
-      },
-      {
-        title: "The Four Pillars of Geometry",
-        by: "John Stillwell",
-        desc: "用四种视角组织几何：欧几里得、坐标、变换与射影。",
-        href: "https://link.springer.com/book/10.1007/0-387-29052-4",
-        tag: "geometry",
-      },
-      {
-        title: "Geometry: Euclid and Beyond",
-        by: "Robin Hartshorne",
-        desc: "从欧几里得公理出发，讨论坐标方法与综合几何各自能走多远。",
-        href: "https://link.springer.com/book/10.1007/978-0-387-22676-7",
-        tag: "geometry",
-      },
     ],
   },
   {
     id: "tools",
     label: "工具与写作",
     en: "TOOLS & WRITING",
-    note: "让公式、图形与文献更快变成可读的东西。",
+    note: "让公式、图形与推导更快变成可读的东西。",
     items: [
-      {
-        title: "KaTeX",
-        by: "Khan Academy",
-        desc: "本站的公式渲染器。服务端渲染，没有客户端闪烁。",
-        href: "https://katex.org/",
-        tag: "tool",
-      },
       {
         title: "GeoGebra",
         by: "GeoGebra",
         desc: "画函数、曲线与曲面，拖动参数看形状怎么变。",
         href: "https://www.geogebra.org/",
-        tag: "tool",
-      },
-      {
-        title: "Zotero",
-        by: "Corporation for Digital Scholarship",
-        desc: "文献管理。真正有用的不是收藏，而是写的时候能立刻找到出处。",
-        href: "https://www.zotero.org/",
         tag: "tool",
       },
       {

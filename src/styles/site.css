@@ -1118,6 +1118,9 @@ svg {
   align-items: end;
   gap: 40px;
 }
+.page-hero-grid.is-single {
+  grid-template-columns: minmax(0, 1fr);
+}
 .page-title {
   margin: 0;
   font-family: var(--font-serif);
@@ -2188,6 +2191,20 @@ svg {
   align-items: center;
   gap: clamp(40px, 6vw, 80px);
 }
+.about-greeting {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(36px, 4.6vw, 60px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+.about-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
 .about-hero-note {
   max-width: 24em;
   margin: 18px 0 0;
@@ -2275,6 +2292,16 @@ svg {
 }
 .about-prose {
   font-size: 16.5px;
+}
+.about-prose > p:first-child {
+  margin-top: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(21px, 2.1vw, 26px);
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-wrap: balance;
 }
 .about-aside {
   position: sticky;
@@ -2654,18 +2681,27 @@ body.search-open {
   color: inherit;
 }
 .footer-top {
+  display: inline-flex;
   flex: none;
-  padding-bottom: 2px;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
   color: var(--muted);
-  font-family: var(--font-sans);
-  font-size: 12px;
-  letter-spacing: 0.04em;
   text-decoration: none;
-  transition: color 180ms ease;
+  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
 .footer-top:hover,
 .footer-top:focus-visible {
+  border-color: var(--muted);
+  background: var(--bg-soft);
   color: var(--text);
+}
+.footer-top .icon {
+  width: 17px;
+  height: 17px;
 }
 
 /* --------------------------------------------------------------------------
@@ -2956,7 +2992,14 @@ body.search-open {
     font-size: 11.5px;
   }
   .footer-top {
-    font-size: 11.5px;
+    width: 32px;
+    height: 32px;
+  }
+  .about-greeting {
+    font-size: clamp(34px, 9vw, 44px);
+  }
+  .about-prose > p:first-child {
+    font-size: 22px;
   }
   .hero-foot {
     flex-wrap: wrap;

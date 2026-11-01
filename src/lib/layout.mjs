@@ -73,7 +73,7 @@ function footer(dateIso, dateLabel) {
       <p class="footer-signature">Fortune-Arterial</p>
       <p class="footer-updated">最新更新：<time datetime="${escapeHtml(dateIso)}">${escapeHtml(dateLabel)}</time></p>
     </div>
-    <a class="footer-top" href="#top">回到顶部</a>
+    <a class="footer-top" href="#top" aria-label="回到顶部" title="回到顶部">${icon("arrowUp", 17)}</a>
   </div>
 </footer>
 ${searchModal()}`;
