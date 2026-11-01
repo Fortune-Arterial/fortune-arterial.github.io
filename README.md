@@ -139,6 +139,14 @@ socials: [
 
 > `basePath` 必须以 `/` 开头和结尾。导航、字体、图片、RSS 与搜索索引都会自动加上这个前缀；Markdown 正文里的绝对图片路径需要自行处理。
 
+## 资源详情页
+
+LaTeX 模板卡片会进入各自的详情页：`/resources/fortune-book/` 与 `/resources/latex-formula-sheet/`（英文为 `/en/resources/...`）。详情页只保留两块内容：PDF 首页局部预览，以及一个 ZIP 源文件下载。
+
+- 预览图：`public/previews/`
+- 源文件：`public/downloads/latex/`
+- 详情页数据：`src/data/resources.mjs` 中对应 item 的 `detail`、`preview`、`sourceNote`
+
 ## 项目结构
 
 ```
@@ -172,6 +180,8 @@ dist/
 ├── map/index.html
 ├── about/index.html
 ├── resources/index.html
+├── resources/fortune-book/index.html
+├── resources/latex-formula-sheet/index.html
 ├── 404.html
 ├── search.json
 ├── rss.xml

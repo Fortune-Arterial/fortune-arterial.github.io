@@ -220,6 +220,16 @@ const zh = {
     tags: { analysis: "数学分析", algebra: "高等代数", geometry: "解析几何", tool: "工具", template: "模板" },
     source: "源文件",
     download: "下载",
+    detail: {
+      back: "全部资源",
+      preview: "预览",
+      source: "源文件",
+      download: "下载源文件",
+      page: (page, total) => `第 ${page} / ${total} 页`,
+      previewNote: "PDF 首页局部预览",
+      format: "格式",
+      size: "大小",
+    },
   },
   notFound: {
     kicker: "404 / NOT FOUND",
@@ -400,6 +410,16 @@ const en = {
     tags: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", tool: "Tool", template: "Template" },
     source: "Source",
     download: "Download",
+    detail: {
+      back: "All resources",
+      preview: "Preview",
+      source: "Source",
+      download: "Download source",
+      page: (page, total) => `Page ${page} / ${total}`,
+      previewNote: "Excerpt of the first PDF page",
+      format: "Format",
+      size: "Size",
+    },
   },
   notFound: {
     kicker: "404 / NOT FOUND",

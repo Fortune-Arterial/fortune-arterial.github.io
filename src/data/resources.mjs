@@ -60,8 +60,8 @@ export const resourceGroups = [
     label: "LaTeX 模板",
     labelEn: "LaTeX template",
     en: "LATEX TEMPLATE",
-    note: "本站笔记使用的XeLaTeX模板，可直接下载源文件。",
-    noteEn: "The XeLaTeX template used for these notes; download the source files directly.",
+    note: "本站笔记使用的 XeLaTeX 模板，点击卡片查看预览并下载源文件。",
+    noteEn: "The XeLaTeX templates used for these notes; open a card to preview and download the source.",
     items: [
       {
         title: "Fortune-Book",
@@ -70,6 +70,10 @@ export const resourceGroups = [
         desc: "一份完整的 XeLaTeX 书稿示例，包含排版、公式、图表与参考文献的写法。",
         descEn: "A complete XeLaTeX book example covering layout, formulas, figures, and references.",
         tag: "template",
+        detail: "/resources/fortune-book/",
+        preview: { src: "/previews/fortune-book.png", page: 1, pages: 21 },
+        sourceNote: "压缩包内含完整的 TeX 源文件、样式、图片与编译好的 PDF。",
+        sourceNoteEn: "The archive includes the complete TeX source, style, images and the compiled PDF.",
         files: [
           { label: "PDF", size: "4.6 MB", href: "/downloads/latex/fortune-book.pdf", name: "Fortune-Book.pdf" },
           { label: "ZIP", size: "9.1 MB", href: "/downloads/latex/fortune-book.zip", name: "Fortune-Book.zip", source: true },
@@ -83,6 +87,10 @@ export const resourceGroups = [
         desc: "常用数学公式的 LaTeX 写法速查，适合放在手边随时查。",
         descEn: "A handy reference for LaTeX notation of common mathematical formulas.",
         tag: "template",
+        detail: "/resources/latex-formula-sheet/",
+        preview: { src: "/previews/latex-formula-sheet.png", page: 1, pages: 14 },
+        sourceNote: "压缩包内含 TeX 源文件、图片、License 与编译好的 PDF。",
+        sourceNoteEn: "The archive includes the TeX source, images, license and the compiled PDF.",
         files: [
           { label: "PDF", size: "400 KB", href: "/downloads/latex/latex-formula-sheet.pdf", name: "LaTeX公式表.pdf" },
           { label: "ZIP", size: "933 KB", href: "/downloads/latex/latex-formula-sheet.zip", name: "LaTeX公式表.zip", source: true },

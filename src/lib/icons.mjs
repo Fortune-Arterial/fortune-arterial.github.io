@@ -12,6 +12,7 @@ const paths = {
   arrowUpRight: '<path d="M7 17 17 7M8 7h9v9"/>',
   arrowLeft: '<path d="M20 12H5M11 6l-6 6 6 6"/>',
   arrowUp: '<path d="M12 20V5M6 11l6-6 6 6"/>',
+  download: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
   copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 5.5A1.5 1.5 0 0 0 13.5 4H5.5A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15"/>',
   link: '<path d="M10 14a4.5 4.5 0 0 0 6.4.4l2-2a4.5 4.5 0 0 0-6.4-6.4l-1.1 1.1"/><path d="M14 10a4.5 4.5 0 0 0-6.4-.4l-2 2A4.5 4.5 0 0 0 12 18l1.1-1.1"/>',
   code: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',

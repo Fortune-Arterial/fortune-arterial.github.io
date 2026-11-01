@@ -551,6 +551,13 @@ function aboutPage(page, posts, mapConcepts) {
   });
 }
 
+function latexMark(text) {
+  const token = "LaTeX";
+  const index = text.indexOf(token);
+  if (index < 0) return escapeHtml(text);
+  return `${escapeHtml(text.slice(0, index))}<span class="latex-word">LaTeX</span>${escapeHtml(text.slice(index + token.length))}`;
+}
+
 function resourceCard(item, index, L) {
   const number = String(index + 1).padStart(2, "0");
   const tag = L.resources.tags[item.tag] || item.tag;
@@ -559,27 +566,18 @@ function resourceCard(item, index, L) {
   const title = isEn() ? item.titleEn || item.title : item.title;
 
   if (item.files) {
-    const primary = item.files[0];
-    return `<article class="resource-card resource-card-file">
+    const detail = item.detail || item.files[0].href;
+    return `<a class="resource-card resource-card-file" href="${url(lp(detail))}">
           <div class="resource-top">
             <span class="resource-index">${number}</span>
             <span class="resource-tag">${escapeHtml(tag)}</span>
-            <a class="resource-arrow" href="${url(primary.href)}" download="${escapeHtml(primary.name)}" aria-label="${escapeHtml(L.resources.download)} ${escapeHtml(title)} ${primary.label}">${icon("arrowUpRight", 17)}</a>
+            <span class="resource-arrow">${icon("arrowUpRight", 17)}</span>
           </div>
-          <h3><a class="resource-title" href="${url(primary.href)}" download="${escapeHtml(primary.name)}">${escapeHtml(title)}</a></h3>
+          <h3>${latexMark(title)}</h3>
           <p class="resource-by">${escapeHtml(by)}</p>
           <p class="resource-desc">${escapeHtml(desc)}</p>
-          <div class="resource-files">
-            ${item.files
-              .map(
-                (file) => `<a class="resource-file" href="${url(file.href)}" download="${escapeHtml(file.name)}">
-              <span class="resource-file-label">${escapeHtml(file.label)}</span>
-              <span class="resource-file-meta">${file.source ? escapeHtml(L.resources.source) + " · " : ""}${escapeHtml(file.size)}</span>
-            </a>`,
-              )
-              .join("")}
-          </div>
-        </article>`;
+          <p class="resource-format">${item.files.map((file) => escapeHtml(file.label)).join(" · ")}</p>
+        </a>`;
   }
 
   return `<a class="resource-card" href="${escapeHtml(item.href)}" target="_blank" rel="noopener">
@@ -594,6 +592,68 @@ function resourceCard(item, index, L) {
         </a>`;
 }
 
+function resourceDetailPage(item, group) {
+  const L = ui();
+  const title = isEn() ? item.titleEn || item.title : item.title;
+  const desc = isEn() ? item.descEn || item.desc : item.desc;
+  const sourceNote = isEn() ? item.sourceNoteEn || item.sourceNote : item.sourceNote;
+  const groupLabel = isEn() ? group.labelEn || group.label : group.label;
+  const source = item.files.find((file) => file.source) || item.files[0];
+  const pdf = item.files.find((file) => file.label === "PDF") || source;
+  const detail = L.resources.detail;
+
+  const content = `<section class="resource-detail-hero">
+  <div class="wrap">
+    <a class="back-link" href="${url(lp("/resources/"))}">${icon("arrowLeft", 15)}${escapeHtml(detail.back)}</a>
+    <p class="page-kicker"><span>${escapeHtml(L.resources.kicker.toUpperCase())}</span> / ${latexMark(groupLabel)}</p>
+    <h1 class="detail-title">${latexMark(title)}</h1>
+    <p class="page-lede">${escapeHtml(desc)}</p>
+  </div>
+</section>
+
+<section class="section resource-detail-section">
+  <div class="wrap resource-detail-grid">
+    <figure class="preview-panel">
+      <div class="preview-toolbar">
+        <span class="preview-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="preview-file">${escapeHtml(pdf.name)}</span>
+        <span class="preview-page">${escapeHtml(detail.page(item.preview.page, item.preview.pages))}</span>
+      </div>
+      <div class="preview-stage">
+        <img src="${url(item.preview.src)}" alt="${escapeHtml(title)} — ${escapeHtml(detail.previewNote)}" width="1241" height="1754" decoding="async">
+      </div>
+      <figcaption class="preview-caption">
+        <span>${escapeHtml(detail.preview)}</span>
+        <span>${escapeHtml(detail.previewNote)}</span>
+      </figcaption>
+    </figure>
+
+    <aside class="source-panel">
+      <p class="page-kicker"><span>SOURCE</span></p>
+      <h2>${escapeHtml(detail.source)}</h2>
+      <p class="source-note">${escapeHtml(sourceNote)}</p>
+      <a class="source-download" href="${url(source.href)}" download="${escapeHtml(source.name)}">
+        ${icon("download", 18)}
+        <span>${escapeHtml(detail.download)}</span>
+        <span class="source-size">${escapeHtml(source.size)}</span>
+      </a>
+      <dl class="source-meta">
+        <div><dt>${escapeHtml(detail.format)}</dt><dd>ZIP</dd></div>
+        <div><dt>${escapeHtml(detail.size)}</dt><dd>${escapeHtml(source.size)}</dd></div>
+      </dl>
+    </aside>
+  </div>
+</section>`;
+
+  return layout({
+    title,
+    description: desc,
+    path: lp(item.detail),
+    active: "resources",
+    content,
+  });
+}
+
 function resourcesPage() {
   const L = ui();
   const groups = resourceGroups
@@ -601,7 +661,7 @@ function resourcesPage() {
       (group, groupIndex) => `<section class="resource-group">
       <div class="resource-group-head">
         <p class="section-label"><span>${String(groupIndex + 1).padStart(2, "0")}</span>${group.en}</p>
-        <h2>${escapeHtml(isEn() ? group.labelEn || group.label : group.label)}</h2>
+        <h2>${latexMark(isEn() ? group.labelEn || group.label : group.label)}</h2>
         <p>${escapeHtml(isEn() ? group.noteEn || group.note : group.note)}</p>
       </div>
       <div class="resource-grid">
@@ -780,6 +840,12 @@ function build() {
     routes.push(write(lp("/map/"), mapPage(mapConcepts)));
     routes.push(write(lp("/about/"), aboutPage(about, posts, mapConcepts)));
     routes.push(write(lp("/resources/"), resourcesPage()));
+    for (const group of resourceGroups) {
+      for (const item of group.items) {
+        if (!item.detail) continue;
+        routes.push(write(lp(item.detail), resourceDetailPage(item, group)));
+      }
+    }
     routes.push(write(lp("/404.html"), notFoundPage()));
 
     fs.writeFileSync(path.join(dist, lp("/search.json").replace(/^\//, "")), JSON.stringify(searchIndex(posts), null, 0));
@@ -788,6 +854,11 @@ function build() {
     const latestDate = posts[0]?.date || new Date().toISOString().slice(0, 10);
     for (const path of ["/", "/notes/", "/map/", "/resources/", "/about/"]) {
       sitemapEntries.push({ loc: abs(lp(path)), lastmod: latestDate });
+    }
+    for (const group of resourceGroups) {
+      for (const item of group.items) {
+        if (item.detail) sitemapEntries.push({ loc: abs(lp(item.detail)), lastmod: latestDate });
+      }
     }
     for (const post of posts) {
       sitemapEntries.push({ loc: abs(post.url), lastmod: post.updated || post.date });
