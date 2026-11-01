@@ -601,6 +601,13 @@ function resourceDetailPage(item, group) {
   const source = item.files.find((file) => file.source) || item.files[0];
   const pdf = item.files.find((file) => file.label === "PDF") || source;
   const detail = L.resources.detail;
+  const pageCount = item.preview.pages;
+  const previewName = `${title}.pdf`;
+  const previewPages = Array.from({ length: pageCount }, (_, index) => {
+    const page = index + 1;
+    const file = String(page).padStart(2, "0");
+    return `<img class="preview-page-img" src="${url(`${item.preview.dir}/page-${file}.png`)}" alt="${escapeHtml(title)} — ${escapeHtml(detail.pageAlt(page, pageCount))}" width="993" height="1404" loading="${page === 1 ? "eager" : "lazy"}" decoding="async">`;
+  }).join("\n        ");
 
   const content = `<section class="resource-detail-hero">
   <div class="wrap">
@@ -616,15 +623,17 @@ function resourceDetailPage(item, group) {
     <figure class="preview-panel">
       <div class="preview-toolbar">
         <span class="preview-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="preview-file">${escapeHtml(pdf.name)}</span>
-        <span class="preview-page">${escapeHtml(detail.page(item.preview.page, item.preview.pages))}</span>
+        <span class="preview-file">${escapeHtml(previewName)}</span>
+        <span class="preview-page">${escapeHtml(detail.pages(pageCount))}</span>
       </div>
-      <div class="preview-stage">
-        <img src="${url(item.preview.src)}" alt="${escapeHtml(title)} — ${escapeHtml(detail.previewNote)}" width="1241" height="1754" decoding="async">
+      <div class="preview-stage" tabindex="0" role="region" aria-label="${escapeHtml(detail.previewAria(pageCount))}">
+        <div class="preview-pages">
+        ${previewPages}
+        </div>
       </div>
       <figcaption class="preview-caption">
         <span>${escapeHtml(detail.preview)}</span>
-        <span>${escapeHtml(detail.previewNote)}</span>
+        <span>${escapeHtml(detail.scrollHint(pageCount))}</span>
       </figcaption>
     </figure>
 
@@ -632,15 +641,18 @@ function resourceDetailPage(item, group) {
       <p class="page-kicker"><span>SOURCE</span></p>
       <h2>${escapeHtml(detail.source)}</h2>
       <p class="source-note">${escapeHtml(sourceNote)}</p>
-      <a class="source-download" href="${url(source.href)}" download="${escapeHtml(source.name)}">
-        ${icon("download", 18)}
-        <span>${escapeHtml(detail.download)}</span>
-        <span class="source-size">${escapeHtml(source.size)}</span>
-      </a>
-      <dl class="source-meta">
-        <div><dt>${escapeHtml(detail.format)}</dt><dd>ZIP</dd></div>
-        <div><dt>${escapeHtml(detail.size)}</dt><dd>${escapeHtml(source.size)}</dd></div>
-      </dl>
+      <div class="source-actions">
+        <a class="source-download" href="${url(source.href)}" download="${escapeHtml(source.name)}">
+          ${icon("download", 18)}
+          <span>${escapeHtml(detail.download)}</span>
+          <span class="source-size">${escapeHtml(source.size)}</span>
+        </a>
+        <a class="source-pdf" href="${url(pdf.href)}" download="${escapeHtml(pdf.name)}">
+          ${icon("download", 18)}
+          <span>${escapeHtml(detail.pdfDownload)}</span>
+          <span class="source-size">${escapeHtml(pdf.size)}</span>
+        </a>
+      </div>
     </aside>
   </div>
 </section>`;

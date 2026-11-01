@@ -141,9 +141,9 @@ socials: [
 
 ## 资源详情页
 
-LaTeX 模板卡片会进入各自的详情页：`/resources/fortune-book/` 与 `/resources/latex-formula-sheet/`（英文为 `/en/resources/...`）。详情页只保留两块内容：PDF 首页局部预览，以及一个 ZIP 源文件下载。
+LaTeX 模板卡片会进入各自的详情页：`/resources/fortune-book/` 与 `/resources/latex-formula-sheet/`（英文为 `/en/resources/...`）。详情页左侧是可上下滚动的完整 PDF 预览，右侧提供 ZIP 源文件与 PDF 两个下载按钮。
 
-- 预览图：`public/previews/`
+- 预览页图：`public/previews/<slug>/page-XX.png`（构建时按 `preview.pages` 全部输出）
 - 源文件：`public/downloads/latex/`
 - 详情页数据：`src/data/resources.mjs` 中对应 item 的 `detail`、`preview`、`sourceNote`
 
@@ -194,7 +194,7 @@ dist/
 
 ## 设计说明
 
-- **排版**：Instrument Serif（标题）+ Inter（正文/界面）+ JetBrains Mono（标签与数字）+ Bodoni Moda Italic（About 艺术署名），中文回退到宋体/苹方。字体自托管在 `public/fonts/`。
+- **排版**：Instrument Serif（标题）+ Inter（正文/界面）+ JetBrains Mono（标签与数字）+ Bodoni Moda Italic（About 艺术署名），中文回退到宋体/苹方；资源详情页标题与 LaTeX 模板卡片标题使用 Times New Roman。字体自托管在 `public/fonts/`。
 - **颜色**：暖纸色背景、钴蓝强调色、浅色页脚。token 在 `src/styles/site.css` 顶部的 `:root` 与 `[data-theme="dark"]`。
 - **知识地图**：坐标基于 1000×600 画布，构建时生成 SVG，交互由 `site.js` 完成。三个学科各有自己的颜色；笔记点亮对应节点。
 - **无跟踪**：默认不加载任何统计或分析脚本。
