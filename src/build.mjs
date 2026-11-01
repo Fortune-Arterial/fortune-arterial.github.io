@@ -546,6 +546,7 @@ function aboutPage(page, posts, mapConcepts) {
     description: L.about.description(site.author.name),
     path: lp("/about/"),
     active: "about",
+    extraHead: `<link rel="preload" href="${url("/assets/fonts/caveat-latin-700.woff2")}" as="font" type="font/woff2" crossorigin>`,
     content,
   });
 }

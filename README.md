@@ -28,7 +28,7 @@
 - **构建**：一段 Node 脚本（`src/build.mjs` + `src/lib/`）
 - **写作**：Markdown + YAML front matter
 - **公式**：KaTeX 在构建时渲染为静态 HTML
-- **样式**：手写 CSS，自托管 Inter / Instrument Serif / JetBrains Mono
+- **样式**：手写 CSS，自托管 Inter / Instrument Serif / JetBrains Mono / Caveat
 - **交互**：原生 JavaScript，负责搜索、主题、目录、筛选与知识地图
 - **部署**：GitHub Actions → GitHub Pages
 
@@ -184,8 +184,8 @@ dist/
 
 ## 设计说明
 
-- **排版**：Instrument Serif（标题）+ Inter（正文/界面）+ JetBrains Mono（标签与数字），中文回退到宋体/苹方。字体自托管在 `public/fonts/`。
-- **颜色**：暖纸色背景、钴蓝强调色、深色页脚。token 在 `src/styles/site.css` 顶部的 `:root` 与 `[data-theme="dark"]`。
+- **排版**：Instrument Serif（标题）+ Inter（正文/界面）+ JetBrains Mono（标签与数字）+ Caveat（About 手写署名），中文回退到宋体/苹方。字体自托管在 `public/fonts/`。
+- **颜色**：暖纸色背景、钴蓝强调色、浅色页脚。token 在 `src/styles/site.css` 顶部的 `:root` 与 `[data-theme="dark"]`。
 - **知识地图**：坐标基于 1000×600 画布，构建时生成 SVG，交互由 `site.js` 完成。三个学科各有自己的颜色；笔记点亮对应节点。
 - **无跟踪**：默认不加载任何统计或分析脚本。
 
