@@ -25,10 +25,10 @@
   font-display: swap;
 }
 @font-face {
-  font-family: "Caveat";
-  src: url("fonts/caveat-latin-700.woff2") format("woff2");
+  font-family: "Bodoni Moda";
+  src: url("fonts/bodoni-moda-italic-700.woff2") format("woff2");
   font-weight: 700;
-  font-style: normal;
+  font-style: italic;
   font-display: swap;
 }
 @font-face {
@@ -2230,14 +2230,14 @@ svg {
   letter-spacing: -0.015em;
 }
 .about-name {
-  margin-left: 0.24em;
-  font-family: "Caveat", "Bradley Hand", cursive;
-  font-size: 1.14em;
-  font-style: normal;
+  margin-left: 0.22em;
+  font-family: "Bodoni Moda", "Instrument Serif", serif;
+  font-size: 1.1em;
+  font-style: italic;
   font-weight: 700;
   line-height: 1;
   color: var(--accent);
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
 }
 .about-lead {
   max-width: 30em;
@@ -3353,9 +3353,14 @@ body.search-open {
     justify-content: center;
   }
   .about-greeting {
-    font-size: 32px;
+    font-size: 30px;
   }
   .about-name {
-    margin-left: 0.2em;
+    margin-left: 0.18em;
+    font-size: 1.06em;
   }
+}
+
+html[lang="en"] .about-name {
+  margin-left: 0.04em;
 }
