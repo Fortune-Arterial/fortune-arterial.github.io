@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { renderMarkdown } from "./markdown.mjs";
 import { categories, concepts } from "../data/map.mjs";
 import { truncate, readingStats, dateParts } from "./site.mjs";
+import { getLang, isEn, lp } from "./i18n.mjs";
 
 const REQUIRED = ["title", "date", "category", "excerpt"];
 const conceptIds = new Set(concepts.map((concept) => concept.id));
@@ -19,7 +20,7 @@ function normalizeTags(tags) {
 }
 
 function loadPosts(root) {
-  const dir = path.join(root, "content", "posts");
+  const dir = path.join(root, "content", isEn() ? "en/posts" : "posts");
   if (!fs.existsSync(dir)) return [];
   const files = fs
     .readdirSync(dir)
@@ -53,7 +54,7 @@ function loadPosts(root) {
 
     posts.push({
       slug,
-      url: `/notes/${slug}/`,
+      url: lp(`/notes/${slug}/`),
       sourcePath: fullPath,
       title: String(data.title).trim(),
       subtitle: data.subtitle ? String(data.subtitle).trim() : "",
@@ -72,7 +73,9 @@ function loadPosts(root) {
     });
   }
 
-  posts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.title.localeCompare(b.title, "zh")));
+  posts.sort((a, b) =>
+    a.date < b.date ? 1 : a.date > b.date ? -1 : a.title.localeCompare(b.title, getLang() === "en" ? "en" : "zh"),
+  );
 
   posts.forEach((post, index) => {
     post.newer = posts[index - 1] || null;
@@ -83,8 +86,9 @@ function loadPosts(root) {
 }
 
 function loadPage(root, name) {
-  const file = path.join(root, "content", "pages", `${name}.md`);
-  assert(fs.existsSync(file), `Missing page content: content/pages/${name}.md`);
+  const dir = isEn() ? path.join(root, "content", "en", "pages") : path.join(root, "content", "pages");
+  const file = path.join(dir, `${name}.md`);
+  assert(fs.existsSync(file), `Missing page content: ${path.relative(root, file)}`);
   const { data, content } = matter(fs.readFileSync(file, "utf8"));
   const rendered = renderMarkdown(content);
   return {
@@ -95,15 +99,20 @@ function loadPage(root, name) {
   };
 }
 
-/** Attach the newest published post to each knowledge-map concept. */
+/** Return a localized copy of the map, with post links for the active locale. */
 function attachConcepts(posts) {
-  for (const concept of concepts) {
+  return concepts.map((concept) => {
     const post = posts.find((item) => item.concepts[0] === concept.id) || null;
-    concept.post = post ? post.slug : null;
-    concept.postUrl = post ? post.url : null;
-    concept.postTitle = post ? post.title : null;
-  }
-  return concepts;
+    return {
+      ...concept,
+      displayName: isEn() ? concept.en : concept.name,
+      altName: isEn() ? "" : concept.en,
+      displaySummary: isEn() ? concept.summaryEn : concept.summary,
+      post: post ? post.slug : null,
+      postUrl: post ? post.url : null,
+      postTitle: post ? post.title : null,
+    };
+  });
 }
 
 function relatedPosts(post, posts, limit = 2) {

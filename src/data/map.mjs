@@ -18,6 +18,8 @@ export const concepts = [
     disciplines: ["analysis"],
     summary:
       "ε–δ 把“无限接近”写成量词顺序；连续则进一步要求极限值等于函数值。",
+    summaryEn:
+      "The ε–δ definition turns “approaches” into an order of quantifiers; continuity further asks the limit to equal the value.",
     x: 128,
     y: 116,
   },
@@ -28,6 +30,8 @@ export const concepts = [
     disciplines: ["analysis"],
     summary:
       "局部线性化：用一条直线替换曲线，误差是比增量更高阶的小量。可导蕴含连续，反之不然。",
+    summaryEn:
+      "Local linearisation: replace a curve by a line, with an error smaller than the increment. Differentiability implies continuity, but not conversely.",
     x: 270,
     y: 210,
   },
@@ -38,6 +42,8 @@ export const concepts = [
     disciplines: ["analysis"],
     summary:
       "罗尔、拉格朗日与柯西中值定理把导数信息与区间增量连起来，是微分学的枢纽。",
+    summaryEn:
+      "Rolle, Lagrange and Cauchy connect derivative information with increments over an interval; the hinge of differential calculus.",
     x: 408,
     y: 112,
   },
@@ -48,6 +54,8 @@ export const concepts = [
     disciplines: ["analysis"],
     summary:
       "分割、取点、求和、取极限。可积性不只取决于函数是否连续，也取决于不连续点集的大小。",
+    summaryEn:
+      "Partition, sample, sum, take a limit. Integrability depends not only on continuity, but also on the size of the discontinuity set.",
     x: 258,
     y: 342,
   },
@@ -58,6 +66,8 @@ export const concepts = [
     disciplines: ["analysis"],
     summary:
       "逐点收敛、一致收敛与绝对收敛是三种强度；交换极限与积分需要一致收敛这类额外条件。",
+    summaryEn:
+      "Pointwise, uniform and absolute convergence are three different strengths; swapping limits with integrals needs uniform convergence.",
     x: 102,
     y: 298,
   },
@@ -68,6 +78,8 @@ export const concepts = [
     disciplines: ["algebra", "geometry"],
     summary:
       "向量、多项式、函数都可能是向量；真正定义它的是加法与数乘所满足的公理。",
+    summaryEn:
+      "Vectors, polynomials and functions can all be vectors; what defines a vector space is the axioms for addition and scalar multiplication.",
     x: 548,
     y: 122,
   },
@@ -78,6 +90,8 @@ export const concepts = [
     disciplines: ["algebra"],
     summary:
       "保持加法与数乘的映射。选定基之后，它才写成矩阵；换基给出相似矩阵。",
+    summaryEn:
+      "A map preserving addition and scalar multiplication. Only after choosing bases does it become a matrix; changing bases gives similar matrices.",
     x: 692,
     y: 188,
   },
@@ -88,6 +102,8 @@ export const concepts = [
     disciplines: ["algebra"],
     summary:
       "线性映射的坐标表示。行列式衡量体积伸缩，也判断可逆性；秩给出像的维数。",
+    summaryEn:
+      "The coordinate form of a linear map. Determinants measure volume scaling and detect invertibility; rank gives the dimension of the image.",
     x: 548,
     y: 286,
   },
@@ -98,6 +114,8 @@ export const concepts = [
     disciplines: ["algebra"],
     summary:
       "特征向量是方向上不改变、只被伸缩的向量；可对角化与否取决于特征空间是否铺满整个空间。",
+    summaryEn:
+      "An eigenvector keeps its direction and is only scaled; diagonalisability depends on whether eigenspaces span the whole space.",
     x: 724,
     y: 322,
   },
@@ -108,6 +126,8 @@ export const concepts = [
     disciplines: ["algebra", "geometry"],
     summary:
       "对称矩阵给出的二次齐次函数。配方法与合同变换把交叉项消掉，正负惯性指数决定形状。",
+    summaryEn:
+      "A homogeneous quadratic function given by a symmetric matrix. Completing the square and congruence remove cross terms; inertia decides the shape.",
     x: 866,
     y: 238,
   },
@@ -118,6 +138,8 @@ export const concepts = [
     disciplines: ["geometry", "algebra"],
     summary:
       "有向线段与坐标数组是同一对象的两张面孔；点积给出长度与夹角，叉积给出定向面积。",
+    summaryEn:
+      "A directed segment and a coordinate array are two faces of one object; dot products give length and angle, cross products give oriented area.",
     x: 444,
     y: 398,
   },
@@ -128,6 +150,8 @@ export const concepts = [
     disciplines: ["geometry"],
     summary:
       "一次方程描述直线与平面；法向量与方向向量把几何条件翻译成线性方程组。",
+    summaryEn:
+      "Linear equations describe lines and planes; normal and direction vectors translate geometric conditions into linear systems.",
     x: 306,
     y: 486,
   },
@@ -138,6 +162,8 @@ export const concepts = [
     disciplines: ["geometry", "algebra"],
     summary:
       "二次曲线的形状由二次型矩阵的惯性指数决定；判别式与不变量把椭圆、双曲线、抛物线分开。",
+    summaryEn:
+      "The shape of a conic is fixed by the inertia of its quadratic matrix; the discriminant and invariants separate ellipses, hyperbolas and parabolas.",
     x: 574,
     y: 482,
   },
@@ -148,6 +174,8 @@ export const concepts = [
     disciplines: ["geometry"],
     summary:
       "二次曲面是三维中的二次方程；截痕法与主轴变换把椭圆面、双曲面、抛物面区分开。",
+    summaryEn:
+      "Quadrics are quadratic equations in three dimensions; slicing and principal-axis transforms distinguish ellipsoids, hyperboloids and paraboloids.",
     x: 720,
     y: 524,
   },
@@ -158,6 +186,8 @@ export const concepts = [
     disciplines: ["geometry", "analysis"],
     summary:
       "曲率衡量曲线偏离直线的程度；参数化、弧长与 Frenet 标架让几何量可以计算。",
+    summaryEn:
+      "Curvature measures how far a curve deviates from a straight line; parametrisation, arc length and the Frenet frame make geometric quantities computable.",
     x: 874,
     y: 420,
   },

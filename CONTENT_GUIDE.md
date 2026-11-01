@@ -1,11 +1,16 @@
 # Content guide
 
-Posts live in `content/posts/*.md` and are built into static pages. The filename
-becomes the URL:
+Posts live in `content/posts/*.md` (Chinese) and `content/en/posts/*.md`
+(English). The filename becomes the URL:
 
 ```
-content/posts/epsilon-delta.md  →  /notes/epsilon-delta/
+content/posts/epsilon-delta.md     →  /notes/epsilon-delta/
+content/en/posts/epsilon-delta.md  →  /en/notes/epsilon-delta/
 ```
+
+Keep the slug and the `concepts` list identical across languages. English body
+text and front matter fields (`title`, `subtitle`, `tags`, `excerpt`) are
+translated; `category` keeps the Chinese key used by the data layer.
 
 The site currently publishes three starter notes: one each in mathematical
 analysis, higher algebra and analytic geometry. They are meant to be rewritten,
@@ -31,7 +36,8 @@ draft: false
 - `title` (required): plain text, no Markdown.
 - `subtitle` (optional): one line, shown under the title on the post page.
 - `date` (required): `YYYY-MM-DD`, quoted.
-- `category` (required): one of 数学分析 / 高等代数 / 解析几何.
+- `category` (required): one of 数学分析 / 高等代数 / 解析几何; the key is the
+  same in English posts, and the UI translates it.
 - `tags` (optional): 2–4 short Chinese or English tags.
 - `concepts` (optional): IDs from the knowledge map. See `src/data/map.mjs`.
   The **first** concept is the post's anchor and lights up that node on the map;
@@ -48,7 +54,8 @@ draft: false
 
 ## Voice
 
-- Write in Chinese, first person, precise and unhurried. No hype, no "众所周知".
+- Write in the language of the folder: Chinese in `content/posts`, English in
+  `content/en/posts`. First person, precise and unhurried. No hype.
 - Every piece should answer three questions: **定义** (what is the object, and
   are the quantifiers and hypotheses clear?), **定理/证明** (what follows from
   what, and where is the key step?), **边界** (when does it fail? is there a

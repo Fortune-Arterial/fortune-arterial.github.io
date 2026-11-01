@@ -10,6 +10,19 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const themeKey = "fa-theme";
 
+  let strings = {};
+  try {
+    strings = JSON.parse($("#fa-ui")?.textContent || "{}").strings || {};
+  } catch {
+    strings = {};
+  }
+  const S = strings;
+  const isEn = (doc.lang || "").toLowerCase().startsWith("en");
+  const Ssearch = S.search || {};
+  const Spost = S.post || {};
+  const Smap = S.map || {};
+  const fill = (template, token, value) => String(template || "").split(token).join(String(value));
+
   const escapeHtml = (value) =>
     String(value ?? "")
       .replace(/&/g, "&amp;")
@@ -40,8 +53,8 @@
   function applyTheme(value) {
     doc.dataset.theme = value;
     $$("[data-theme-toggle]").forEach((button) => {
-      button.setAttribute("aria-label", value === "dark" ? "切换到浅色模式" : "切换到深色模式");
-      button.setAttribute("title", value === "dark" ? "切换到浅色模式" : "切换到深色模式");
+      button.setAttribute("aria-label", value === "dark" ? S.themeLight : S.themeDark);
+      button.setAttribute("title", value === "dark" ? S.themeLight : S.themeDark);
     });
   }
 
@@ -109,12 +122,12 @@
   function closeMenu() {
     document.body.classList.remove("nav-open");
     menuToggle?.setAttribute("aria-expanded", "false");
-    menuToggle?.setAttribute("aria-label", "打开菜单");
+    menuToggle?.setAttribute("aria-label", S.menuOpen);
   }
   function toggleMenu() {
     const open = document.body.classList.toggle("nav-open");
     menuToggle?.setAttribute("aria-expanded", String(open));
-    menuToggle?.setAttribute("aria-label", open ? "关闭菜单" : "打开菜单");
+    menuToggle?.setAttribute("aria-label", open ? S.menuClose : S.menuOpen);
   }
   menuToggle?.addEventListener("click", toggleMenu);
   $$(".nav-link").forEach((link) => link.addEventListener("click", closeMenu));
@@ -179,20 +192,20 @@
     let items = [];
 
     if (!searchIndex) {
-      searchResults.innerHTML = `<p class="search-hint">搜索索引不可用。</p>`;
+      searchResults.innerHTML = `<p class="search-hint">${escapeHtml(Ssearch.unavailable || "")}</p>`;
       return;
     }
 
     if (!searchIndex.length) {
-      searchCount.textContent = "0 篇笔记";
-      searchResults.innerHTML = `<p class="search-hint">还没有可搜索的笔记。<br>第一篇文章发布后，这里会自动建立索引。</p>`;
+      searchCount.textContent = fill(Ssearch.results, "{{n}}", 0);
+      searchResults.innerHTML = `<p class="search-hint">${Ssearch.noNotes || ""}</p>`;
       return;
     }
 
     if (!terms.length) {
       items = searchIndex.slice(0, 5);
       activeResult = -1;
-      searchCount.textContent = `最近 ${items.length} 篇`;
+      searchCount.textContent = fill(Ssearch.recent, "{{n}}", items.length);
       searchResults.innerHTML = items
         .map(
           (item, index) => `<a class="search-result${index === 0 ? " is-active" : ""}" id="search-result-${index}" href="${escapeHtml(
@@ -217,12 +230,12 @@
       .map((entry) => entry.item);
 
     if (!items.length) {
-      searchCount.textContent = "0 条结果";
-      searchResults.innerHTML = `<p class="search-hint">没有找到「${escapeHtml(query.trim())}」。<br>试试更短的关键词，或者只搜标签。</p>`;
+      searchCount.textContent = Ssearch.none || "0";
+      searchResults.innerHTML = `<p class="search-hint">${fill(Ssearch.notFound, "{{q}}", escapeHtml(query.trim()))}</p>`;
       return;
     }
 
-    searchCount.textContent = `${items.length} 条结果`;
+    searchCount.textContent = fill(Ssearch.results, "{{n}}", items.length);
     searchResults.innerHTML = items
       .map(
         (item, index) => `<a class="search-result${index === 0 ? " is-active" : ""}" id="search-result-${index}" href="${escapeHtml(
@@ -248,7 +261,7 @@
   async function ensureSearchIndex() {
     if (searchIndex || searchLoading) return;
     searchLoading = true;
-    if (searchResults) searchResults.innerHTML = '<p class="search-hint">正在载入索引…</p>';
+    if (searchResults) searchResults.innerHTML = `<p class="search-hint">${escapeHtml(Ssearch.loading || "")}</p>`;
     try {
       const response = await fetch(modal.dataset.searchIndex, { headers: { Accept: "application/json" } });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -256,8 +269,7 @@
       renderSearch(searchInput?.value || "");
     } catch {
       if (searchResults) {
-        searchResults.innerHTML =
-          '<p class="search-hint">搜索索引加载失败。请确认页面是通过本地服务器或 GitHub Pages 打开的。</p>';
+        searchResults.innerHTML = `<p class="search-hint">${escapeHtml(Ssearch.loadError || "")}</p>`;
       }
     } finally {
       searchLoading = false;
@@ -455,7 +467,7 @@
       if (!code) return;
       const ok = await copyText(code.innerText);
       const original = button.textContent;
-      button.textContent = ok ? "已复制" : "复制失败";
+      button.textContent = ok ? Spost.codeCopied : Spost.codeFail;
       window.setTimeout(() => {
         button.textContent = original;
       }, 1600);
@@ -468,10 +480,10 @@
       const label = button.querySelector("span");
       if (!label) return;
       button.classList.toggle("is-copied", ok);
-      label.textContent = ok ? "链接已复制" : "复制失败";
+      label.textContent = ok ? Spost.copySuccess : Spost.copyFail;
       window.setTimeout(() => {
         button.classList.remove("is-copied");
-        label.textContent = "复制链接";
+        label.textContent = Spost.copyLink;
       }, 1800);
     });
   });
@@ -588,17 +600,17 @@
         .join("");
 
       panel.innerHTML = `<div class="map-detail">
-        <div class="map-detail-kicker"><span>CONCEPT ${index} / ${String(data.total).padStart(2, "0")}</span><button type="button" data-map-close aria-label="关闭详情">✕</button></div>
+        <div class="map-detail-kicker"><span>CONCEPT ${index} / ${String(data.total).padStart(2, "0")}</span><button type="button" data-map-close aria-label="${escapeHtml(Smap.close || "")}">✕</button></div>
         <h3>${escapeHtml(concept.name)}</h3>
-        <p class="map-detail-en">${escapeHtml(concept.en)}</p>
+        <p class="map-detail-en">${escapeHtml(concept.altName || "")}</p>
         <p class="map-detail-summary">${escapeHtml(concept.summary)}</p>
         <div class="map-detail-discs">${discs}</div>
-        <p class="map-detail-label">关联概念</p>
-        <div class="map-detail-related">${relatedLinks || '<span class="map-detail-disc">独立节点</span>'}</div>
+        <p class="map-detail-label">${escapeHtml(Smap.related || "")}</p>
+        <div class="map-detail-related">${relatedLinks || `<span class="map-detail-disc">${escapeHtml(Smap.independent || "")}</span>`}</div>
         ${
           concept.postUrl
-            ? `<a class="map-detail-link" href="${escapeHtml(concept.postUrl)}">阅读笔记 <span aria-hidden="true">→</span></a>`
-            : '<p class="map-detail-empty">这个概念还没有写。它已经在待写清单里，只是还欠一次足够清楚的推导。</p>'
+            ? `<a class="map-detail-link" href="${escapeHtml(concept.postUrl)}">${escapeHtml(Smap.readNote || "")} <span aria-hidden="true">→</span></a>`
+            : `<p class="map-detail-empty">${escapeHtml(Smap.emptyNote || "")}</p>`
         }
       </div>`;
 
@@ -633,12 +645,12 @@
         if (discipline !== "all") {
           const names = nodes.filter((node) => node.dataset.disciplines.split(" ").includes(discipline)).length;
           panel.innerHTML = `<div class="map-detail">
-            <div class="map-detail-kicker"><span>FILTER</span><button type="button" data-map-close aria-label="清除筛选">✕</button></div>
+            <div class="map-detail-kicker"><span>${escapeHtml(Smap.filter || "FILTER")}</span><button type="button" data-map-close aria-label="${escapeHtml(Smap.clear || "")}">✕</button></div>
             <h3>${escapeHtml(disciplineById.get(discipline)?.name || discipline)}</h3>
-            <p class="map-detail-en">${escapeHtml(disciplineById.get(discipline)?.en || "")}</p>
-            <p class="map-detail-summary">这个学科在地图上有 ${names} 个概念。亮色实心节点表示已经写过的笔记。</p>
-            <p class="map-detail-label">提示</p>
-            <div class="map-detail-empty">再次点击“全部”可以恢复完整视图。</div>
+            ${isEn ? "" : `<p class="map-detail-en">${escapeHtml(disciplineById.get(discipline)?.en || "")}</p>`}
+            <p class="map-detail-summary">${escapeHtml(fill(Smap.discipline, "{{n}}", names))}</p>
+            <p class="map-detail-label">${escapeHtml(Smap.hint || "")}</p>
+            <div class="map-detail-empty">${escapeHtml(Smap.hintBody || "")}</div>
           </div>`;
           $("[data-map-close]", panel)?.addEventListener("click", resetPanel);
         }

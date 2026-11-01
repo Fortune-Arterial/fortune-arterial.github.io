@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { config, url, abs, escapeHtml, formatDate } from "./lib/site.mjs";
+import { config, currentSite, url, abs, escapeHtml, formatDate } from "./lib/site.mjs";
 import {
   layout,
   sectionHead,
@@ -15,6 +15,7 @@ import { loadPosts, loadPage, attachConcepts, relatedPosts } from "./lib/content
 import { concepts, disciplines, categories } from "./data/map.mjs";
 import { resourceGroups } from "./data/resources.mjs";
 import { icon, brandMark } from "./lib/icons.mjs";
+import { setLang, getLang, isEn, lp, ui } from "./lib/i18n.mjs";
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const dist = path.join(root, "dist");
@@ -36,6 +37,10 @@ function write(route, html) {
 function categoryColor(category) {
   const discipline = disciplines.find((item) => item.id === categories[category]?.tone);
   return discipline?.color || "#777";
+}
+
+function categoryLabel(category) {
+  return isEn() ? categories[category]?.en || category : category;
 }
 
 function socialHref(social) {
@@ -74,37 +79,39 @@ function heroArt() {
     <span class="art-corner art-corner-br"></span>
   </div>
   <div class="art-legend">
-    <span><i class="legend-line"></i>分析</span>
-    <span><i class="legend-line"></i>代数</span>
-    <span><i class="legend-line"></i>几何</span>
+    ${disciplines
+      .map((discipline) => `<span><i class="legend-line"></i>${escapeHtml(isEn() ? discipline.en : discipline.name)}</span>`)
+      .join("\n    ")}
   </div>
 </div>`;
 }
 
 function hero(posts) {
+  const L = ui();
+  const site = currentSite();
   return `<section class="hero">
   <div class="wrap hero-inner">
     <div class="hero-copy">
-      <p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>${escapeHtml(config.hero.kicker)}</p>
-      <h1 class="hero-title"><span class="hero-line">${escapeHtml(config.hero.line1)}</span><span class="hero-line">${escapeHtml(
-        config.hero.line2,
-      )}<em>${escapeHtml(config.hero.emphasis)}</em>${escapeHtml(config.hero.line2Tail)}</span></h1>
-      <p class="hero-lede">${escapeHtml(config.hero.statement)}</p>
+      <p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>${escapeHtml(site.hero.kicker)}</p>
+      <h1 class="hero-title"><span class="hero-line">${escapeHtml(site.hero.line1)}</span><span class="hero-line">${escapeHtml(
+        site.hero.line2,
+      )}<em>${escapeHtml(site.hero.emphasis)}</em>${escapeHtml(site.hero.line2Tail)}</span></h1>
+      <p class="hero-lede">${escapeHtml(site.hero.statement)}</p>
       <div class="hero-actions">
         <a class="button button-solid" href="${
-          posts.length ? url("/notes/") : url("/map/")
-        }">${posts.length ? "开始阅读" : "浏览知识地图"} ${icon("arrowRight", 17)}</a>
+          posts.length ? url(lp("/notes/")) : url(lp("/map/"))
+        }">${posts.length ? escapeHtml(L.hero.start) : escapeHtml(L.hero.browseMap)} ${icon("arrowRight", 17)}</a>
         <a class="button button-quiet" href="${
-          posts.length ? url("/map/") : url("/about/")
-        }">${posts.length ? icon("spark", 15) : ""} ${posts.length ? "知识地图" : "关于本站"}</a>
+          posts.length ? url(lp("/map/")) : url(lp("/about/"))
+        }">${posts.length ? icon("spark", 15) : ""} ${posts.length ? escapeHtml(L.hero.map) : escapeHtml(L.hero.about)}</a>
       </div>
     </div>
     ${heroArt()}
   </div>
   <div class="wrap hero-foot">
-    <span>EST. ${escapeHtml(config.established)}</span>
-    <span class="hero-foot-mid">${escapeHtml(config.tagline)}</span>
-    <span>${escapeHtml(config.author.location)}</span>
+    <span>EST. ${escapeHtml(site.established)}</span>
+    <span class="hero-foot-mid">${escapeHtml(site.tagline)}</span>
+    <span>${escapeHtml(site.author.location)}</span>
   </div>
 </section>`;
 }
@@ -116,41 +123,24 @@ function ticker() {
 }
 
 function principles() {
-  const items = [
-    {
-      n: "01",
-      label: "DEFINITION",
-      title: "先问定义",
-      body: "对象是什么？量词、条件与记号必须先说清楚。很多争论其实源于把两个不同的定义当成了同一个。",
-    },
-    {
-      n: "02",
-      label: "THEOREM",
-      title: "再问定理",
-      body: "在哪些假设下，结论成立？把条件逐条拆开，找出真正被用到的那一条，才算读懂定理。",
-    },
-    {
-      n: "03",
-      label: "PROOF",
-      title: "最后看证明",
-      body: "证明如何从假设走到结论？每一步用了什么定义或前一条定理？能否举出反例说明条件不可省？",
-    },
-  ];
+  const L = ui();
+  const items = L.principles.items
+    .map((item, index) => ({ ...item, n: String(index + 1).padStart(2, "0") }));
 
   return `<section class="principles">
   <div class="wrap principles-inner">
     <div class="principles-intro">
-      <p class="section-label"><span>02</span>METHOD</p>
-      <h2 class="principles-title">三件事，<br>反复问。</h2>
-      <p>写作不是展示结论，而是把“为什么”逼到不能再退的地方。</p>
+      <p class="section-label"><span>02</span>${escapeHtml(L.principles.eyebrow)}</p>
+      <h2 class="principles-title">${L.principles.title}</h2>
+      <p>${escapeHtml(L.principles.intro)}</p>
     </div>
     <div class="principles-list">
       ${items
         .map(
           (item) => `<article class="principle">
-        <div class="principle-top"><span class="principle-num">${item.n}</span><span class="principle-label">${item.label}</span></div>
-        <h3>${item.title}</h3>
-        <p>${item.body}</p>
+        <div class="principle-top"><span class="principle-num">${item.n}</span><span class="principle-label">${escapeHtml(item.label)}</span></div>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.body)}</p>
       </article>`,
         )
         .join("")}
@@ -160,18 +150,21 @@ function principles() {
 }
 
 function emptyLatest() {
+  const L = ui();
   return `<div class="empty-latest">
     <span class="empty-latest-number" aria-hidden="true">00</span>
     <div class="empty-latest-copy">
-      <p class="empty-kicker">THE FIRST NOTE</p>
-      <h3>还没有笔记，但地图已经铺好。</h3>
-      <p>数学分析的极限、高等代数的线性映射、解析几何的二次曲线，都在图上等待第一篇笔记。</p>
+      <p class="empty-kicker">${escapeHtml(L.home.emptyKicker)}</p>
+      <h3>${escapeHtml(L.home.emptyTitle)}</h3>
+      <p>${escapeHtml(L.home.emptyBody)}</p>
     </div>
-    <a class="empty-latest-link" href="${url("/map/")}">先看看知识地图 ${icon("arrowRight", 16)}</a>
+    <a class="empty-latest-link" href="${url(lp("/map/"))}">${escapeHtml(L.home.emptyLink)} ${icon("arrowRight", 16)}</a>
   </div>`;
 }
 
-function homePage(posts) {
+function homePage(posts, mapConcepts) {
+  const L = ui();
+  const site = currentSite();
   const latest = posts.slice(0, 4);
 
   const content = `${hero(posts)}
@@ -180,10 +173,10 @@ ${ticker()}
   <div class="wrap">
     ${sectionHead({
       index: "01",
-      eyebrow: "LATEST NOTES",
-      title: "最新笔记",
-      href: posts.length ? url("/notes/") : null,
-      linkLabel: `全部 ${posts.length} 篇`,
+      eyebrow: isEn() ? "LATEST NOTES" : "LATEST NOTES",
+      title: L.home.latest,
+      href: posts.length ? url(lp("/notes/")) : null,
+      linkLabel: L.home.allPosts(posts.length),
     })}
     ${
       latest.length
@@ -198,32 +191,33 @@ ${principles()}
     ${sectionHead({
       index: "03",
       eyebrow: "KNOWLEDGE MAP",
-      title: "知识地图",
-      href: url("/map/"),
-      linkLabel: "打开完整地图",
+      title: L.home.map,
+      href: url(lp("/map/")),
+      linkLabel: L.home.openMap,
     })}
-    <p class="section-lede">把笔记放回概念之间：点一个节点，看看它依赖什么、延伸到哪里，以及哪些问题还没有写。</p>
-    ${renderMap({ mapId: "home-map" })}
+    <p class="section-lede">${escapeHtml(L.home.mapLede)}</p>
+    ${renderMap({ mapId: "home-map", concepts: mapConcepts })}
   </div>
 </section>`;
+  const twitter = site.socials?.find((social) => social.icon === "github")?.href;
   const websiteLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: config.name,
-    url: abs("/"),
-    description: config.description,
-    inLanguage: "zh-CN",
+    name: site.name,
+    url: abs(lp("/")),
+    description: site.description,
+    inLanguage: isEn() ? "en" : "zh-CN",
     author: {
       "@type": "Person",
-      name: config.author.name,
-      url: config.socials.find((social) => social.icon === "github")?.href || abs("/about/"),
+      name: site.author.name,
+      url: twitter || abs(lp("/about/")),
     },
   };
 
   return layout({
     title: null,
-    description: config.description,
-    path: "/",
+    description: site.description,
+    path: lp("/"),
     active: "home",
     bodyClass: "page-home",
     content,
@@ -236,15 +230,16 @@ ${principles()}
 /* ------------------------------------------------------------------ */
 
 function emptyNotes() {
+  const L = ui();
   return `<section class="section section-list section-empty">
   <div class="wrap">
     <div class="empty-page">
       <p class="empty-page-kicker">NO NOTES YET</p>
-      <h2>第一篇笔记，<br>还在路上。</h2>
-      <p>站点框架已经就位。等内容写下来，这里会自动按时间排列，并生成搜索索引与 RSS。</p>
+      <h2>${L.notes.emptyTitle}</h2>
+      <p>${escapeHtml(L.notes.emptyBody)}</p>
       <div class="hero-actions">
-        <a class="button button-quiet" href="${url("/about/")}">关于本站</a>
-        <a class="button button-quiet" href="${url("/map/")}">看看知识地图 ${icon("arrowRight", 16)}</a>
+        <a class="button button-quiet" href="${url(lp("/about/"))}">${escapeHtml(L.notes.emptyAbout)}</a>
+        <a class="button button-quiet" href="${url(lp("/map/"))}">${escapeHtml(L.notes.emptyMap)} ${icon("arrowRight", 16)}</a>
       </div>
     </div>
   </div>
@@ -252,24 +247,25 @@ function emptyNotes() {
 }
 
 function notesPage(posts) {
+  const L = ui();
   const present = [...new Set(posts.map((post) => post.category))].sort(
     (a, b) => Object.keys(categories).indexOf(a) - Object.keys(categories).indexOf(b),
   );
   const filters = [
-    `<button class="filter-button is-active" type="button" data-filter="all">全部<span>${posts.length}</span></button>`,
+    `<button class="filter-button is-active" type="button" data-filter="all">${escapeHtml(L.notes.all)}<span>${posts.length}</span></button>`,
     ...present.map(
       (category) =>
         `<button class="filter-button" type="button" data-filter="${escapeHtml(category)}" style="--cat-base:${categoryColor(
           category,
-        )}">${escapeHtml(category)}<span>${posts.filter((post) => post.category === category).length}</span></button>`,
+        )}">${escapeHtml(categoryLabel(category))}<span>${posts.filter((post) => post.category === category).length}</span></button>`,
     ),
   ].join("");
 
   const content = `<section class="page-hero">
   <div class="wrap">
-    <p class="page-kicker"><span>NOTES</span> / 笔记</p>
+    <p class="page-kicker"><span>NOTES</span>${isEn() ? "" : " / 笔记"}</p>
     <div class="page-hero-grid is-single">
-      <h1 class="page-title">笔记<span class="page-title-count">${String(posts.length).padStart(2, "0")}</span></h1>
+      <h1 class="page-title">${escapeHtml(L.notes.title)}<span class="page-title-count">${String(posts.length).padStart(2, "0")}</span></h1>
     </div>
   </div>
 </section>
@@ -282,22 +278,22 @@ ${
       <div class="filters" data-filters>${filters}</div>
       <label class="list-search">
         ${icon("search", 16)}
-        <input type="search" placeholder="筛选标题、标签…" data-list-search aria-label="筛选笔记">
+        <input type="search" placeholder="${escapeHtml(L.notes.filter)}" data-list-search aria-label="${escapeHtml(L.notes.filterAria)}">
       </label>
     </div>
     <div class="post-list" data-post-list>
       ${posts.map((post, index) => postRow(post, index)).join("\n")}
     </div>
-    <p class="empty-state" data-empty-state hidden>没有匹配的笔记。换个关键词，或者点“全部”。</p>
+    <p class="empty-state" data-empty-state hidden>${escapeHtml(L.notes.empty)}</p>
   </div>
 </section>`
     : emptyNotes()
 }`;
 
   return layout({
-    title: "笔记",
-    description: "数学分析、高等代数与解析几何的笔记：从定义、定理到证明与反例。",
-    path: "/notes/",
+    title: L.notes.title,
+    description: L.notes.description,
+    path: lp("/notes/"),
     active: "notes",
     content,
   });
@@ -308,6 +304,8 @@ ${
 /* ------------------------------------------------------------------ */
 
 function postPage(post, posts) {
+  const L = ui();
+  const site = currentSite();
   const related = relatedPosts(post, posts, 2);
   const jsonLd = {
     "@context": "https://schema.org",
@@ -316,37 +314,37 @@ function postPage(post, posts) {
     description: post.excerpt,
     datePublished: post.date,
     dateModified: post.updated || post.date,
-    inLanguage: "zh-CN",
+    inLanguage: isEn() ? "en" : "zh-CN",
     url: abs(post.url),
     mainEntityOfPage: abs(post.url),
     image: abs("/og.png"),
-    author: { "@type": "Person", name: config.author.name, url: abs("/about/") },
-    publisher: { "@type": "Organization", name: config.name, url: abs("/") },
+    author: { "@type": "Person", name: site.author.name, url: abs(lp("/about/")) },
+    publisher: { "@type": "Organization", name: site.name, url: abs(lp("/")) },
     keywords: post.tags.join(", "),
-    articleSection: post.category,
+    articleSection: categoryLabel(post.category),
   };
 
-  const pager = `<nav class="post-pager" aria-label="上一篇与下一篇">
+  const pager = `<nav class="post-pager" aria-label="${escapeHtml(L.post.pagerAria)}">
     ${
       post.newer
-        ? `<a class="pager-link pager-newer" href="${url(post.newer.url)}"><span>${icon("arrowLeft", 15)} 较新</span><strong>${escapeHtml(
+        ? `<a class="pager-link pager-newer" href="${url(post.newer.url)}"><span>${icon("arrowLeft", 15)} ${escapeHtml(L.post.newer)}</span><strong>${escapeHtml(
             post.newer.title,
           )}</strong></a>`
-        : `<span class="pager-link is-empty"><span>已经是最新一篇</span></span>`
+        : `<span class="pager-link is-empty"><span>${escapeHtml(L.post.noNewer)}</span></span>`
     }
     ${
       post.older
-        ? `<a class="pager-link pager-older" href="${url(post.older.url)}"><span>较早 ${icon("arrowRight", 15)}</span><strong>${escapeHtml(
+        ? `<a class="pager-link pager-older" href="${url(post.older.url)}"><span>${escapeHtml(L.post.older)} ${icon("arrowRight", 15)}</span><strong>${escapeHtml(
             post.older.title,
           )}</strong></a>`
-        : `<span class="pager-link is-empty"><span>已经是最早一篇</span></span>`
+        : `<span class="pager-link is-empty"><span>${escapeHtml(L.post.noOlder)}</span></span>`
     }
   </nav>`;
 
   const relatedMarkup = related.length
     ? `<section class="related">
     <div class="wrap">
-      <div class="related-head"><p class="section-label"><span>NEXT</span>继续阅读</p><a class="section-link" href="${url("/notes/")}">全部笔记 ${icon(
+      <div class="related-head"><p class="section-label"><span>NEXT</span>${escapeHtml(L.post.related)}</p><a class="section-link" href="${url(lp("/notes/"))}">${escapeHtml(L.post.allNotes)} ${icon(
         "arrowRight",
         16,
       )}</a></div>
@@ -357,7 +355,7 @@ function postPage(post, posts) {
           <div class="post-meta">${categoryBadge(item.category)}<time datetime="${item.date}">${formatDate(item.date)}</time></div>
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.excerpt)}</p>
-          <span class="related-more">阅读 ${icon("arrowRight", 15)}</span>
+          <span class="related-more">${escapeHtml(L.post.read)} ${icon("arrowRight", 15)}</span>
         </a>`,
           )
           .join("")}
@@ -368,23 +366,23 @@ function postPage(post, posts) {
 
   const content = `<article class="post">
   <div class="wrap">
-    <nav class="breadcrumb" aria-label="面包屑">
-      <a href="${url("/notes/")}">笔记</a><span aria-hidden="true">/</span><span>${escapeHtml(post.category)}</span>
+    <nav class="breadcrumb" aria-label="${escapeHtml(L.post.breadcrumbAria)}">
+      <a href="${url(lp("/notes/"))}">${escapeHtml(L.post.breadcrumb)}</a><span aria-hidden="true">/</span><span>${escapeHtml(categoryLabel(post.category))}</span>
     </nav>
     <header class="post-header">
       <div class="post-meta post-meta-top">
         ${categoryBadge(post.category)}
         <time datetime="${post.date}">${formatDate(post.date, "long")}</time>
         <span class="meta-sep" aria-hidden="true">·</span>
-        <span>${post.reading.minutes} 分钟阅读</span>
+        <span>${escapeHtml(L.post.minutes(post.reading.minutes))}</span>
       </div>
       <h1 class="post-title">${escapeHtml(post.title)}</h1>
       ${post.subtitle ? `<p class="post-subtitle">${escapeHtml(post.subtitle)}</p>` : ""}
       <div class="post-byline">
         <span class="byline-mark">${brandMark(30)}</span>
-        <span>${escapeHtml(config.author.name)}</span>
+        <span>${escapeHtml(site.author.name)}</span>
         <span class="meta-sep" aria-hidden="true">·</span>
-        <span>${post.reading.characters.toLocaleString("zh-CN")} 字</span>
+        <span>${escapeHtml(L.post.chars(post.reading.characters.toLocaleString(isEn() ? "en-US" : "zh-CN")))}</span>
       </div>
     </header>
 
@@ -399,7 +397,7 @@ function postPage(post, posts) {
       <div class="post-tags">
         ${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
       </div>
-      <p class="post-license">本文由 ${escapeHtml(config.author.name)} 写作，采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可。欢迎指正。</p>
+      <p class="post-license">${L.post.license(escapeHtml(site.author.name))}</p>
     </footer>
     ${pager}
   </div>
@@ -416,7 +414,7 @@ ${relatedMarkup}`;
     ogType: "article",
     jsonLd,
     extraHead: `<meta property="article:published_time" content="${post.date}">
-<meta property="article:section" content="${escapeHtml(post.category)}">
+<meta property="article:section" content="${escapeHtml(categoryLabel(post.category))}">
 ${post.tags.map((tag) => `<meta property="article:tag" content="${escapeHtml(tag)}">`).join("\n")}`,
   });
 }
@@ -425,26 +423,27 @@ ${post.tags.map((tag) => `<meta property="article:tag" content="${escapeHtml(tag
 /* Map, about, resources, 404                                         */
 /* ------------------------------------------------------------------ */
 
-function mapPage(posts) {
-  const litCount = concepts.filter((concept) => concept.postUrl).length;
+function mapPage(mapConcepts) {
+  const L = ui();
+  const litCount = mapConcepts.filter((concept) => concept.postUrl).length;
   const content = `<section class="page-hero">
   <div class="wrap">
-    <p class="page-kicker"><span>KNOWLEDGE MAP</span> / 知识地图</p>
+    <p class="page-kicker"><span>KNOWLEDGE MAP</span>${isEn() ? "" : " / 知识地图"}</p>
     <div class="page-hero-grid">
-      <h1 class="page-title">知识地图</h1>
-      <p class="page-lede">概念不是孤岛。这里把已经写过的与准备写的放在同一张图上：实线表示依赖与延伸，虚线表示对照。点一个节点开始。</p>
+      <h1 class="page-title">${escapeHtml(L.mapPage.title)}</h1>
+      <p class="page-lede">${escapeHtml(L.mapPage.lede)}</p>
     </div>
     <div class="page-stats">
-      <div class="stat"><strong>${String(litCount).padStart(2, "0")}</strong><span>个概念已点亮</span></div>
-      <div class="stat"><strong>${String(concepts.length).padStart(2, "0")}</strong><span>个概念在图中</span></div>
-      <div class="stat"><strong>${String(disciplines.length).padStart(2, "0")}</strong><span>个学科</span></div>
+      <div class="stat"><strong>${String(litCount).padStart(2, "0")}</strong><span>${escapeHtml(L.mapPage.lit)}</span></div>
+      <div class="stat"><strong>${String(mapConcepts.length).padStart(2, "0")}</strong><span>${escapeHtml(L.mapPage.total)}</span></div>
+      <div class="stat"><strong>${String(disciplines.length).padStart(2, "0")}</strong><span>${escapeHtml(L.mapPage.disciplines)}</span></div>
     </div>
   </div>
 </section>
 
 <section class="section section-map-page">
   <div class="wrap">
-    ${renderMap({ mapId: "page-map" })}
+    ${renderMap({ mapId: "page-map", concepts: mapConcepts })}
   </div>
 </section>
 
@@ -452,34 +451,36 @@ function mapPage(posts) {
   <div class="wrap map-explainer-grid">
     <article>
       <p class="section-label"><span>01</span>NODES</p>
-      <h2>实心是已经写过的</h2>
-      <p>亮色实心节点对应至少一篇笔记；空心节点是准备写、但还没有写完的概念。它们留在图上，是为了让缺口可见。</p>
+      <h2>${escapeHtml(L.mapPage.nodesTitle)}</h2>
+      <p>${escapeHtml(L.mapPage.nodesBody)}</p>
     </article>
     <article>
       <p class="section-label"><span>02</span>EDGES</p>
-      <h2>连线是关系，不是装饰</h2>
-      <p>实线表示前置或延伸，点线表示方法的应用，虚线表示互相参照。点一个节点，与它相关的边会亮起来。</p>
+      <h2>${escapeHtml(L.mapPage.edgesTitle)}</h2>
+      <p>${escapeHtml(L.mapPage.edgesBody)}</p>
     </article>
     <article>
       <p class="section-label"><span>03</span>COLORS</p>
-      <h2>颜色是学科，不是难度</h2>
-      <p>一个概念可以同时属于多个学科，因此节点会有两种颜色的环。颜色只表示归属，不表示重要程度。</p>
+      <h2>${escapeHtml(L.mapPage.colorsTitle)}</h2>
+      <p>${escapeHtml(L.mapPage.colorsBody)}</p>
     </article>
   </div>
 </section>`;
 
   return layout({
-    title: "知识地图",
-    description: "一张关于数学分析、高等代数与解析几何的概念地图：笔记之间的依赖、延伸与应用。",
-    path: "/map/",
+    title: L.mapPage.title,
+    description: L.mapPage.description,
+    path: lp("/map/"),
     active: "map",
     content,
   });
 }
 
-function aboutPage(page, posts) {
-  const litCount = concepts.filter((concept) => concept.postUrl).length;
-  const socials = config.socials
+function aboutPage(page, posts, mapConcepts) {
+  const L = ui();
+  const site = currentSite();
+  const litCount = mapConcepts.filter((concept) => concept.postUrl).length;
+  const socials = site.socials
     .map(
       (social) =>
         `<a href="${escapeHtml(socialHref(social))}"${/^https?:/i.test(socialHref(social)) ? ' target="_blank" rel="noopener me"' : ""}>${icon(
@@ -492,17 +493,18 @@ function aboutPage(page, posts) {
   const content = `<section class="page-hero about-hero">
   <div class="wrap about-hero-grid">
     <div>
-      <p class="page-kicker"><span>ABOUT</span> / 关于</p>
-      <h1 class="about-greeting">你好，我是<span class="about-name">${escapeHtml(config.author.name.split(" ")[0])}</span></h1>
+      <p class="page-kicker"><span>ABOUT</span>${isEn() ? "" : " / 关于"}</p>
+      <h1 class="about-greeting">${escapeHtml(L.about.greeting)} <span class="about-name">${escapeHtml(site.author.name.split(" ")[0])}</span></h1>
+      <p class="about-lead">${escapeHtml(L.about.lead)}</p>
     </div>
     <div class="about-portrait" aria-hidden="true">
       <div class="portrait-frame">
         ${brandMark(76)}
         <span class="portrait-coord">ONLINE / UTC+8</span>
-        <span class="portrait-name">${escapeHtml(config.wordmark)}</span>
+        <span class="portrait-name">${escapeHtml(site.wordmark)}</span>
         <span class="portrait-role">ANALYSIS · ALGEBRA · GEOMETRY</span>
         <span class="portrait-line"></span>
-        <span class="portrait-year">EST. ${escapeHtml(config.established)}</span>
+        <span class="portrait-year">EST. ${escapeHtml(site.established)}</span>
       </div>
     </div>
   </div>
@@ -515,24 +517,24 @@ function aboutPage(page, posts) {
     </div>
     <aside class="about-aside">
       <div class="fact">
-        <p class="fact-label">现在</p>
-        <p>学数学，写笔记，正在全力备考。</p>
+        <p class="fact-label">${escapeHtml(L.about.now)}</p>
+        <p>${escapeHtml(L.about.nowText)}</p>
       </div>
       <div class="fact">
-        <p class="fact-label">联系</p>
+        <p class="fact-label">${escapeHtml(L.about.contact)}</p>
         ${
-          config.author.email
-            ? `<a class="fact-mail" href="mailto:${escapeHtml(config.author.email)}">${escapeHtml(config.author.email)}</a>`
+          site.author.email
+            ? `<a class="fact-mail" href="mailto:${escapeHtml(site.author.email)}">${escapeHtml(site.author.email)}</a>`
             : `<a class="fact-mail" href="https://github.com/fortune-arterial" target="_blank" rel="noopener me">github.com/fortune-arterial</a>`
         }
         <div class="fact-socials">${socials}</div>
       </div>
       <div class="fact">
-        <p class="fact-label">本站</p>
+        <p class="fact-label">${escapeHtml(L.about.site)}</p>
         <dl class="fact-stats">
-          <div><dt>笔记</dt><dd>${posts.length}</dd></div>
-          <div><dt>已点亮概念</dt><dd>${litCount} / ${concepts.length}</dd></div>
-          <div><dt>始于</dt><dd>${escapeHtml(config.established)}</dd></div>
+          <div><dt>${escapeHtml(L.about.notes)}</dt><dd>${posts.length}</dd></div>
+          <div><dt>${escapeHtml(L.about.lit)}</dt><dd>${litCount} / ${mapConcepts.length}</dd></div>
+          <div><dt>${escapeHtml(L.about.since)}</dt><dd>${escapeHtml(site.established)}</dd></div>
         </dl>
       </div>
     </aside>
@@ -540,29 +542,23 @@ function aboutPage(page, posts) {
 </section>`;
 
   return layout({
-    title: "关于",
-    description: `${config.author.name} 的个人笔记：记录数学学习、笔记与备考过程中的内容。`,
-    path: "/about/",
+    title: isEn() ? "About" : "关于",
+    description: L.about.description(site.author.name),
+    path: lp("/about/"),
     active: "about",
     content,
   });
 }
 
-const tagLabels = {
-  analysis: "数学分析",
-  algebra: "高等代数",
-  geometry: "解析几何",
-  tool: "工具",
-};
-
 function resourcesPage() {
+  const L = ui();
   const groups = resourceGroups
     .map(
       (group, groupIndex) => `<section class="resource-group">
       <div class="resource-group-head">
         <p class="section-label"><span>${String(groupIndex + 1).padStart(2, "0")}</span>${group.en}</p>
-        <h2>${group.label}</h2>
-        <p>${group.note}</p>
+        <h2>${escapeHtml(isEn() ? group.labelEn || group.label : group.label)}</h2>
+        <p>${escapeHtml(isEn() ? group.noteEn || group.note : group.note)}</p>
       </div>
       <div class="resource-grid">
         ${group.items
@@ -570,12 +566,12 @@ function resourcesPage() {
             (item, index) => `<a class="resource-card" href="${escapeHtml(item.href)}" target="_blank" rel="noopener">
           <div class="resource-top">
             <span class="resource-index">${String(index + 1).padStart(2, "0")}</span>
-            <span class="resource-tag">${escapeHtml(tagLabels[item.tag] || item.tag)}</span>
+            <span class="resource-tag">${escapeHtml(L.resources.tags[item.tag] || item.tag)}</span>
             ${icon("arrowUpRight", 17)}
           </div>
           <h3>${escapeHtml(item.title)}</h3>
           <p class="resource-by">${escapeHtml(item.by)}</p>
-          <p class="resource-desc">${escapeHtml(item.desc)}</p>
+          <p class="resource-desc">${escapeHtml(isEn() ? item.descEn || item.desc : item.desc)}</p>
         </a>`,
           )
           .join("")}
@@ -586,9 +582,9 @@ function resourcesPage() {
 
   const content = `<section class="page-hero">
   <div class="wrap">
-    <p class="page-kicker"><span>LIBRARY</span> / 资源</p>
+    <p class="page-kicker"><span>LIBRARY</span>${isEn() ? "" : " / 资源"}</p>
     <div class="page-hero-grid is-single">
-      <h1 class="page-title">资源</h1>
+      <h1 class="page-title">${escapeHtml(L.resources.title)}</h1>
     </div>
   </div>
 </section>
@@ -598,32 +594,33 @@ function resourcesPage() {
 `;
 
   return layout({
-    title: "资源",
-    description: "数学分析、高等代数与解析几何的书桌：教材、几何工具与写作工具。",
-    path: "/resources/",
+    title: L.resources.title,
+    description: L.resources.description,
+    path: lp("/resources/"),
     active: "resources",
     content,
   });
 }
 
 function notFoundPage() {
+  const L = ui();
   const content = `<section class="not-found">
   <div class="wrap">
     <p class="page-kicker"><span>404</span> / NOT FOUND</p>
-    <h1>这一页<br>还没有被<em>写下</em>。</h1>
-    <p class="page-lede">链接可能过期了，也可能是我在重构站点时弄丢了它。</p>
+    <h1>${L.notFound.title}</h1>
+    <p class="page-lede">${escapeHtml(L.notFound.lede)}</p>
     <div class="hero-actions">
-      <a class="button button-solid" href="${url("/")}">返回首页 ${icon("arrowRight", 17)}</a>
-      <a class="button button-quiet" href="${url("/notes/")}">全部笔记</a>
+      <a class="button button-solid" href="${url(lp("/"))}">${escapeHtml(L.notFound.home)} ${icon("arrowRight", 17)}</a>
+      <a class="button button-quiet" href="${url(lp("/notes/"))}">${escapeHtml(L.notFound.notes)}</a>
     </div>
     <div class="not-found-mark" aria-hidden="true">✳</div>
   </div>
 </section>`;
 
   return layout({
-    title: "页面未找到",
-    description: "这个页面不存在。",
-    path: "/404.html",
+    title: L.notFound.titleTag,
+    description: L.notFound.description,
+    path: lp("/404.html"),
     content,
     extraHead: '<meta name="robots" content="noindex">',
   });
@@ -637,7 +634,7 @@ function searchIndex(posts) {
   return posts.map((post) => ({
     title: post.title,
     url: url(post.url),
-    category: post.category,
+    category: categoryLabel(post.category),
     tone: categories[post.category].tone,
     tags: post.tags,
     date: post.date,
@@ -647,6 +644,9 @@ function searchIndex(posts) {
 }
 
 function feed(posts) {
+  const L = ui();
+  const site = currentSite();
+  const feedPath = lp("/rss.xml");
   const items = posts
     .slice(0, 20)
     .map(
@@ -655,7 +655,7 @@ function feed(posts) {
       <link>${abs(post.url)}</link>
       <guid isPermaLink="true">${abs(post.url)}</guid>
       <pubDate>${formatDate(post.date, "rfc")}</pubDate>
-      <category>${escapeHtml(post.category)}</category>
+      <category>${escapeHtml(categoryLabel(post.category))}</category>
       <description>${escapeHtml(post.excerpt)}</description>
     </item>`,
     )
@@ -664,29 +664,19 @@ function feed(posts) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${escapeHtml(config.title)}</title>
-    <link>${abs("/")}</link>
-    <description>${escapeHtml(config.description)}</description>
-    <language>zh-CN</language>
+    <title>${escapeHtml(site.name)}</title>
+    <link>${abs(lp("/"))}</link>
+    <description>${escapeHtml(L.feed.description)}</description>
+    <language>${isEn() ? "en" : "zh-CN"}</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="${abs("/rss.xml")}" rel="self" type="application/rss+xml"/>
+    <atom:link href="${abs(feedPath)}" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>
 </rss>
 `;
 }
 
-function sitemap(posts) {
-  const latestDate = posts[0]?.date || new Date().toISOString().slice(0, 10);
-  const entries = [
-    { loc: abs("/"), lastmod: latestDate },
-    { loc: abs("/notes/"), lastmod: latestDate },
-    { loc: abs("/map/"), lastmod: latestDate },
-    { loc: abs("/resources/"), lastmod: latestDate },
-    { loc: abs("/about/"), lastmod: latestDate },
-    ...posts.map((post) => ({ loc: abs(post.url), lastmod: post.updated || post.date })),
-  ];
-
+function sitemap(entries) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${entries
@@ -738,35 +728,52 @@ function build() {
   fs.rmSync(dist, { recursive: true, force: true });
   fs.mkdirSync(dist, { recursive: true });
 
-  const posts = loadPosts(root);
-  attachConcepts(posts);
-  const about = loadPage(root, "about");
-
   copyAssets();
 
   const routes = [];
-  routes.push(write("/", homePage(posts)));
-  routes.push(write("/notes/", notesPage(posts)));
-  for (const post of posts) {
-    routes.push(write(post.url, postPage(post, posts)));
-  }
-  routes.push(write("/map/", mapPage(posts)));
-  routes.push(write("/about/", aboutPage(about, posts)));
-  routes.push(write("/resources/", resourcesPage()));
-  routes.push(write("/404.html", notFoundPage()));
+  const sitemapEntries = [];
+  const postCounts = {};
 
+  for (const lang of ["zh", "en"]) {
+    setLang(lang);
+    const posts = loadPosts(root);
+    postCounts[lang] = posts.length;
+    const mapConcepts = attachConcepts(posts);
+    const about = loadPage(root, "about");
+
+    routes.push(write(lp("/"), homePage(posts, mapConcepts)));
+    routes.push(write(lp("/notes/"), notesPage(posts)));
+    for (const post of posts) {
+      routes.push(write(post.url, postPage(post, posts)));
+    }
+    routes.push(write(lp("/map/"), mapPage(mapConcepts)));
+    routes.push(write(lp("/about/"), aboutPage(about, posts, mapConcepts)));
+    routes.push(write(lp("/resources/"), resourcesPage()));
+    routes.push(write(lp("/404.html"), notFoundPage()));
+
+    fs.writeFileSync(path.join(dist, lp("/search.json").replace(/^\//, "")), JSON.stringify(searchIndex(posts), null, 0));
+    fs.writeFileSync(path.join(dist, lp("/rss.xml").replace(/^\//, "")), feed(posts));
+
+    const latestDate = posts[0]?.date || new Date().toISOString().slice(0, 10);
+    for (const path of ["/", "/notes/", "/map/", "/resources/", "/about/"]) {
+      sitemapEntries.push({ loc: abs(lp(path)), lastmod: latestDate });
+    }
+    for (const post of posts) {
+      sitemapEntries.push({ loc: abs(post.url), lastmod: post.updated || post.date });
+    }
+  }
+
+  setLang("zh");
   fs.writeFileSync(path.join(dist, ".nojekyll"), "");
-  fs.writeFileSync(path.join(dist, "search.json"), JSON.stringify(searchIndex(posts), null, 0));
-  fs.writeFileSync(path.join(dist, "rss.xml"), feed(posts));
-  fs.writeFileSync(path.join(dist, "sitemap.xml"), sitemap(posts));
+  fs.writeFileSync(path.join(dist, "sitemap.xml"), sitemap(sitemapEntries));
   fs.writeFileSync(
     path.join(dist, "robots.txt"),
     `User-agent: *\nAllow: /\n\nSitemap: ${abs("/sitemap.xml")}\n`,
   );
 
   const elapsed = Math.round(performance.now() - started);
-  console.log(`\n  ${config.name} · built ${routes.length} pages, ${posts.length} posts in ${elapsed}ms`);
-  console.log(`  ${routes.slice(0, 6).join("  ")}${routes.length > 6 ? "  …" : ""}\n`);
+  console.log(`\n  ${config.name} · built ${routes.length} pages, ${postCounts.zh} + ${postCounts.en} posts in ${elapsed}ms`);
+  console.log(`  ${routes.slice(0, 8).join("  ")}${routes.length > 8 ? "  …" : ""}\n`);
 }
 
 build();

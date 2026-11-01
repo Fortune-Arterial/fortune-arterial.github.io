@@ -2,7 +2,7 @@
 
 个人数学笔记，线上地址：**<https://fortune-arterial.github.io>**
 
-独立设计、独立实现的静态站点。主题是**数学分析、高等代数与解析几何**：记录定义、定理、证明与反例，以及三门课之间的联系。
+独立设计、独立实现的静态站点。主题是**数学分析、高等代数与解析几何**：记录定义、定理、证明与反例，以及三门课之间的联系。站点提供完整的中英文版本，右上角可随时切换。
 
 当前已发布三篇起始笔记，知识地图、搜索、RSS 与部署流程都已跑通。推送 `main` 即自动构建并发布到 GitHub Pages。
 
@@ -15,6 +15,7 @@
 | 首页 / 笔记 / 知识地图 / 关于 / 资源 / 404 | 已完成 |
 | Markdown 文章系统、KaTeX、代码高亮、提示框 | 已完成 |
 | 全文搜索、明暗主题、RSS、sitemap、SEO | 已完成 |
+| 中英文双语（`/` 与 `/en/`） | 全部页面、文章、搜索、地图、RSS 已接通 |
 | 知识地图（15 个概念、3 个学科） | 交互已完成，3 个节点已由笔记点亮 |
 | 文章 | **3 篇**：极限、线性映射、二次曲线 |
 | GitHub Actions 部署 | 已完成，线上运行中 |
@@ -52,11 +53,14 @@ npm run new -- my-note "一篇新笔记"   # 创建草稿
 
 ## 写作
 
-文章放在 `content/posts/*.md`，文件名就是 URL：
+中文文章放在 `content/posts/*.md`，英文文章放在 `content/en/posts/*.md`，两边的文件名和 slug 保持一致：
 
 ```
-content/posts/epsilon-delta.md  →  /notes/epsilon-delta/
+content/posts/epsilon-delta.md     →  /notes/epsilon-delta/
+content/en/posts/epsilon-delta.md  →  /en/notes/epsilon-delta/
 ```
+
+英文页面的界面文案在 `src/lib/i18n.mjs`，英文页面正文在 `content/en/pages/`。`category` 字段两种语言都使用同一组中文键（`数学分析` / `高等代数` / `解析几何`），页面会根据当前语言显示对应英文名；`concepts` 也共用同一组 ID。
 
 Front matter 示例：
 
@@ -73,7 +77,7 @@ draft: false
 ---
 ```
 
-- `category` 必须是 `src/data/map.mjs` 中 `categories` 的键：`数学分析` / `高等代数` / `解析几何`。
+- `category` 必须是 `src/data/map.mjs` 中 `categories` 的键：`数学分析` / `高等代数` / `解析几何`（英文文章也用这些键）。
 - `concepts` 是知识地图里的概念 ID。**第一个概念是文章的主节点**，会点亮地图；其余概念用于关联与相关阅读。
 - 当前概念 ID：`limit`、`derivative`、`mvt`、`integral`、`series`、`linear-space`、`linear-map`、`matrix`、`eigen`、`quadratic-form`、`vector`、`line-plane`、`conic`、`quadric`、`curvature`。
 - `draft: true` 的文章不会进入构建。
@@ -87,6 +91,7 @@ draft: false
   ```
 
   支持 `note`、`tip`、`warn`。
+- 英文文章沿用相同的 front matter；`title`、`subtitle`、`tags`、`excerpt` 写英文即可。
 - 图片放在 `public/images/`。用户站点可以用 `/images/xxx.png`；如果部署在子路径，请写完整的 `basePath` 路径，或使用相对路径。Markdown 中的图片地址不会被自动加上 `basePath`。
 
 详细规范见 [`CONTENT_GUIDE.md`](CONTENT_GUIDE.md)。

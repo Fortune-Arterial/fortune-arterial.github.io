@@ -2,6 +2,7 @@ import MarkdownIt from "markdown-it";
 import container from "markdown-it-container";
 import hljs from "highlight.js";
 import katex from "katex";
+import { isEn } from "./i18n.mjs";
 
 const CALLOUTS = {
   note: { label: "注", icon: "◎" },
@@ -237,7 +238,7 @@ export function renderMarkdown(source) {
   html = html.replace(
     /<h([23]) id="([^"]+)">([\s\S]*?)<\/h\1>/g,
     (_, level, id, inner) =>
-      `<h${level} id="${id}">${inner}<a class="heading-anchor" href="#${id}" aria-label="链接到本节" tabindex="-1">#</a></h${level}>`,
+      `<h${level} id="${id}">${inner}<a class="heading-anchor" href="#${id}" aria-label="${isEn() ? "Link to this section" : "链接到本节"}" tabindex="-1">#</a></h${level}>`,
   );
   return { html, toc: env.toc || [], plain: plainText(html) };
 }

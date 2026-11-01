@@ -33,6 +33,23 @@ export default {
     location: "China",
   },
 
+
+  en: {
+    title: "Fortune Arterial · Mathematical Analysis, Higher Algebra & Analytic Geometry",
+    description:
+      "Notes by Fortune Arterial on mathematical analysis, higher algebra and analytic geometry: definitions, theorems, proofs and counterexamples, and the connections between them.",
+    hero: {
+      line1: "Make hard questions",
+      line2: "a little ",
+      emphasis: "clearer",
+      line2Tail: ".",
+      statement:
+        "Notes on mathematical analysis, higher algebra and analytic geometry: what a definition really says, why a theorem holds, and where it breaks.",
+    },
+    author: {
+      bio: "Learning and writing across mathematical analysis, higher algebra and analytic geometry. A good explanation should give both a proof and a counterexample.",
+    },
+  },
   established: "2026",
 
   socials: [

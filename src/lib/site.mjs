@@ -1,10 +1,22 @@
 import config from "../../site.config.mjs";
+import { getLang, isEn } from "./i18n.mjs";
 
 const rawBase = config.basePath || "/";
 export const base = rawBase.startsWith("/") ? rawBase : `/${rawBase}`;
 export const baseWithSlash = base.endsWith("/") ? base : `${base}/`;
 
 export { config };
+
+/** Config overlaid with the active locale. */
+export function currentSite() {
+  if (!isEn()) return config;
+  return {
+    ...config,
+    ...(config.en || {}),
+    hero: { ...config.hero, ...(config.en?.hero || {}) },
+    author: { ...config.author, ...(config.en?.author || {}) },
+  };
+}
 
 /** Prefix an internal path with the configured base path. */
 export function url(path = "/") {
@@ -43,6 +55,14 @@ export function dateParts(iso) {
 
 export function formatDate(iso, style = "dot") {
   const { year, month, day } = dateParts(iso);
+  if (isEn() && style === "long") {
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "UTC",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(new Date(Date.UTC(year, month - 1, day)));
+  }
   switch (style) {
     case "long":
       return `${year} 年 ${month} 月 ${day} 日`;

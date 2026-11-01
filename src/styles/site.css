@@ -349,6 +349,29 @@ svg {
   border-color: var(--line-strong);
   background: var(--surface);
 }
+.lang-switch {
+  display: inline-flex;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.lang-switch:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+  background: var(--surface);
+}
 .theme-icon {
   display: grid;
   place-items: center;
@@ -2193,17 +2216,25 @@ svg {
 }
 .about-greeting {
   margin: 0;
-  font-family: var(--font-sans);
-  font-size: clamp(36px, 4.6vw, 60px);
-  font-weight: 500;
-  line-height: 1.18;
-  letter-spacing: -0.03em;
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 4.8vw, 64px);
+  font-weight: 400;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
 }
 .about-name {
-  font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
+  color: var(--accent);
   letter-spacing: 0.005em;
+}
+.about-lead {
+  max-width: 30em;
+  margin: 20px 0 0;
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 1.7vw, 23px);
+  line-height: 1.75;
+  color: var(--muted);
 }
 .about-hero-note {
   max-width: 24em;
@@ -2293,16 +2324,7 @@ svg {
 .about-prose {
   font-size: 16.5px;
 }
-.about-prose > p:first-child {
-  margin-top: 0;
-  font-family: var(--font-sans);
-  font-size: clamp(21px, 2.1vw, 26px);
-  font-weight: 600;
-  line-height: 1.6;
-  letter-spacing: -0.015em;
-  color: var(--text);
-  text-wrap: balance;
-}
+
 .about-aside {
   position: sticky;
   top: calc(var(--header-h) + 30px);
@@ -2967,6 +2989,15 @@ body.search-open {
   .search-trigger kbd {
     display: none;
   }
+  .tools {
+    gap: 6px;
+  }
+  .lang-switch {
+    width: 38px;
+    min-width: 38px;
+    padding: 0;
+    font-size: 9.5px;
+  }
   .hero {
     padding-top: 36px;
   }
@@ -2998,8 +3029,9 @@ body.search-open {
   .about-greeting {
     font-size: clamp(34px, 9vw, 44px);
   }
-  .about-prose > p:first-child {
-    font-size: 22px;
+  .about-lead {
+    margin-top: 14px;
+    font-size: 18px;
   }
   .hero-foot {
     flex-wrap: wrap;
@@ -3290,5 +3322,23 @@ body.search-open {
     content: " (" attr(href) ")";
     font-size: 8pt;
     color: #555;
+  }
+}
+
+
+@media (max-width: 360px) {
+  .tools {
+    gap: 4px;
+  }
+  .search-trigger,
+  .icon-button,
+  .lang-switch {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+  }
+  .search-trigger {
+    padding: 0;
+    justify-content: center;
   }
 }
