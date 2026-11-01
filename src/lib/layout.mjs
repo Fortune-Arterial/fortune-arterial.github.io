@@ -69,11 +69,11 @@ function searchModal() {
 function footer(dateIso, dateLabel) {
   return `<footer class="site-footer">
   <div class="wrap footer-minimal">
-    <p class="footer-signature">Fortune-Arterial</p>
-    <p class="footer-updated">
-      <span>LAST UPDATED</span>
-      <time datetime="${escapeHtml(dateIso)}">${escapeHtml(dateLabel)}</time>
-    </p>
+    <div class="footer-identity">
+      <p class="footer-signature">Fortune-Arterial</p>
+      <p class="footer-updated">最新更新：<time datetime="${escapeHtml(dateIso)}">${escapeHtml(dateLabel)}</time></p>
+    </div>
+    <a class="footer-top" href="#top">回到顶部</a>
   </div>
 </footer>
 ${searchModal()}`;
@@ -102,7 +102,7 @@ export function layout({
   }).formatToParts(new Date());
   const datePart = (type) => dateParts.find((part) => part.type === type)?.value || "";
   const dateIso = `${datePart("year")}-${datePart("month")}-${datePart("day")}`;
-  const dateLabel = dateIso.replaceAll("-", ".");
+  const dateLabel = `${datePart("year")}年${Number(datePart("month"))}月${Number(datePart("day"))}日`;
 
   const structured = jsonLd
     ? `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>`

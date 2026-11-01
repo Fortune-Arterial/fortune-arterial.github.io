@@ -2621,45 +2621,51 @@ body.search-open {
    -------------------------------------------------------------------------- */
 
 .site-footer {
-  position: relative;
-  overflow: hidden;
-  padding: clamp(56px, 7vw, 88px) 0;
-  background: #14161c;
-  color: #e9e7df;
+  padding: 28px 0 32px;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
 }
 .footer-minimal {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 40px;
+  gap: 32px;
 }
 .footer-signature {
   margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(42px, 7vw, 96px);
+  font-family: "Times New Roman", Times, serif;
+  font-size: 19px;
   font-weight: 400;
-  line-height: 0.86;
-  letter-spacing: -0.03em;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 .footer-updated {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-  margin: 0 0 5px;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.18em;
-  color: #8a8f99;
-  text-transform: uppercase;
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 .footer-updated time {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  color: #e9e7df;
+  font: inherit;
+  color: inherit;
+}
+.footer-top {
+  flex: none;
+  padding-bottom: 2px;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+.footer-top:hover,
+.footer-top:focus-visible {
+  color: var(--text);
 }
 
 /* --------------------------------------------------------------------------
@@ -2936,15 +2942,21 @@ body.search-open {
     font-size: 14px;
     line-height: 1.9;
   }
+  .site-footer {
+    padding: 22px 0 24px;
+  }
   .footer-minimal {
     align-items: flex-end;
-    gap: 16px;
+    gap: 20px;
   }
   .footer-signature {
-    font-size: clamp(32px, 9vw, 56px);
+    font-size: 18px;
   }
   .footer-updated {
-    margin: 0;
+    font-size: 11.5px;
+  }
+  .footer-top {
+    font-size: 11.5px;
   }
   .hero-foot {
     flex-wrap: wrap;
