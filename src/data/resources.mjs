@@ -62,6 +62,32 @@ export const resourceGroups = [
     en: "LATEX TEMPLATE",
     note: "本站笔记使用的XeLaTeX模板，可直接下载源文件。",
     noteEn: "The XeLaTeX template used for these notes; download the source files directly.",
-    items: [],
+    items: [
+      {
+        title: "Fortune-Book",
+        by: "XeLaTeX 模板",
+        byEn: "XeLaTeX template",
+        desc: "一份完整的 XeLaTeX 书稿示例，包含排版、公式、图表与参考文献的写法。",
+        descEn: "A complete XeLaTeX book example covering layout, formulas, figures, and references.",
+        tag: "template",
+        files: [
+          { label: "PDF", size: "4.6 MB", href: "/downloads/latex/fortune-book.pdf", name: "Fortune-Book.pdf" },
+          { label: "ZIP", size: "9.1 MB", href: "/downloads/latex/fortune-book.zip", name: "Fortune-Book.zip", source: true },
+        ],
+      },
+      {
+        title: "LaTeX 公式表",
+        titleEn: "LaTeX Formula Sheet",
+        by: "Fortune Arterial",
+        byEn: "Fortune Arterial",
+        desc: "常用数学公式的 LaTeX 写法速查，适合放在手边随时查。",
+        descEn: "A handy reference for LaTeX notation of common mathematical formulas.",
+        tag: "template",
+        files: [
+          { label: "PDF", size: "400 KB", href: "/downloads/latex/latex-formula-sheet.pdf", name: "LaTeX公式表.pdf" },
+          { label: "ZIP", size: "933 KB", href: "/downloads/latex/latex-formula-sheet.zip", name: "LaTeX公式表.zip", source: true },
+        ],
+      },
+    ],
   },
 ];

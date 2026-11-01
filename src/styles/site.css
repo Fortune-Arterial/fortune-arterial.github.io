@@ -3364,3 +3364,62 @@ body.search-open {
 html[lang="en"] .about-name {
   margin-left: 0.04em;
 }
+
+.resource-card-file .resource-desc {
+  margin-bottom: 0;
+}
+.resource-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  border-radius: 50%;
+  color: var(--faint);
+  transition: color 0.2s, background 0.2s;
+}
+.resource-arrow:hover {
+  color: var(--accent);
+  background: var(--bg-soft);
+}
+.resource-arrow svg {
+  margin-left: 0;
+}
+.resource-title {
+  color: inherit;
+}
+.resource-title:hover {
+  color: var(--accent);
+}
+.resource-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 18px;
+}
+.resource-file {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.resource-file:hover {
+  border-color: var(--accent);
+  background: var(--bg-soft);
+  color: var(--accent);
+}
+.resource-file-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+.resource-file-meta {
+  font-size: 10px;
+  color: var(--muted);
+}

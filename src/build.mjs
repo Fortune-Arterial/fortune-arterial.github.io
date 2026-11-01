@@ -551,6 +551,49 @@ function aboutPage(page, posts, mapConcepts) {
   });
 }
 
+function resourceCard(item, index, L) {
+  const number = String(index + 1).padStart(2, "0");
+  const tag = L.resources.tags[item.tag] || item.tag;
+  const desc = isEn() ? item.descEn || item.desc : item.desc;
+  const by = isEn() ? item.byEn || item.by : item.by;
+  const title = isEn() ? item.titleEn || item.title : item.title;
+
+  if (item.files) {
+    const primary = item.files[0];
+    return `<article class="resource-card resource-card-file">
+          <div class="resource-top">
+            <span class="resource-index">${number}</span>
+            <span class="resource-tag">${escapeHtml(tag)}</span>
+            <a class="resource-arrow" href="${url(primary.href)}" download="${escapeHtml(primary.name)}" aria-label="${escapeHtml(L.resources.download)} ${escapeHtml(title)} ${primary.label}">${icon("arrowUpRight", 17)}</a>
+          </div>
+          <h3><a class="resource-title" href="${url(primary.href)}" download="${escapeHtml(primary.name)}">${escapeHtml(title)}</a></h3>
+          <p class="resource-by">${escapeHtml(by)}</p>
+          <p class="resource-desc">${escapeHtml(desc)}</p>
+          <div class="resource-files">
+            ${item.files
+              .map(
+                (file) => `<a class="resource-file" href="${url(file.href)}" download="${escapeHtml(file.name)}">
+              <span class="resource-file-label">${escapeHtml(file.label)}</span>
+              <span class="resource-file-meta">${file.source ? escapeHtml(L.resources.source) + " · " : ""}${escapeHtml(file.size)}</span>
+            </a>`,
+              )
+              .join("")}
+          </div>
+        </article>`;
+  }
+
+  return `<a class="resource-card" href="${escapeHtml(item.href)}" target="_blank" rel="noopener">
+          <div class="resource-top">
+            <span class="resource-index">${number}</span>
+            <span class="resource-tag">${escapeHtml(tag)}</span>
+            ${icon("arrowUpRight", 17)}
+          </div>
+          <h3>${escapeHtml(title)}</h3>
+          <p class="resource-by">${escapeHtml(by)}</p>
+          <p class="resource-desc">${escapeHtml(desc)}</p>
+        </a>`;
+}
+
 function resourcesPage() {
   const L = ui();
   const groups = resourceGroups
@@ -562,20 +605,7 @@ function resourcesPage() {
         <p>${escapeHtml(isEn() ? group.noteEn || group.note : group.note)}</p>
       </div>
       <div class="resource-grid">
-        ${group.items
-          .map(
-            (item, index) => `<a class="resource-card" href="${escapeHtml(item.href)}" target="_blank" rel="noopener">
-          <div class="resource-top">
-            <span class="resource-index">${String(index + 1).padStart(2, "0")}</span>
-            <span class="resource-tag">${escapeHtml(L.resources.tags[item.tag] || item.tag)}</span>
-            ${icon("arrowUpRight", 17)}
-          </div>
-          <h3>${escapeHtml(item.title)}</h3>
-          <p class="resource-by">${escapeHtml(item.by)}</p>
-          <p class="resource-desc">${escapeHtml(isEn() ? item.descEn || item.desc : item.desc)}</p>
-        </a>`,
-          )
-          .join("")}
+        ${group.items.map((item, index) => resourceCard(item, index, L)).join("")}
       </div>
     </section>`,
     )
