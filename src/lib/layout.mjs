@@ -88,7 +88,7 @@ function footer(dateIso, dateLabel) {
   <div class="wrap footer-minimal">
     <div class="footer-identity">
       <p class="footer-signature">Fortune-Arterial</p>
-      <p class="footer-updated">${escapeHtml(L.footerUpdated)}：<time datetime="${escapeHtml(dateIso)}">${escapeHtml(dateLabel)}</time></p>
+      <p class="footer-updated">${escapeHtml(L.footerUpdated)}${isEn() ? ": " : "："}<time datetime="${escapeHtml(dateIso)}">${escapeHtml(dateLabel)}</time></p>
     </div>
     <a class="footer-top" href="#top" aria-label="${escapeHtml(L.backTop)}" title="${escapeHtml(L.backTop)}">${icon("arrowUp", 17)}</a>
   </div>
