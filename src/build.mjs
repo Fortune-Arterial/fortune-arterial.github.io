@@ -82,15 +82,6 @@ function heroArt() {
 }
 
 function hero(posts) {
-  const socials = config.socials
-    .map(
-      (social) =>
-        `<a class="hero-social" href="${escapeHtml(socialHref(social))}" aria-label="${escapeHtml(social.label)}" title="${escapeHtml(social.label)}"${
-          /^https?:/i.test(socialHref(social)) ? ' target="_blank" rel="noopener me"' : ""
-        }>${icon(social.icon, 18)}</a>`,
-    )
-    .join("");
-
   return `<section class="hero">
   <div class="wrap hero-inner">
     <div class="hero-copy">
@@ -106,11 +97,6 @@ function hero(posts) {
         <a class="button button-quiet" href="${
           posts.length ? url("/map/") : url("/about/")
         }">${posts.length ? icon("spark", 15) : ""} ${posts.length ? "知识地图" : "关于本站"}</a>
-      </div>
-      <div class="hero-elsewhere">
-        <span class="hero-elsewhere-label">ELSEWHERE</span>
-        <div class="hero-socials">${socials}</div>
-        <span class="hero-note-count">${String(posts.length).padStart(2, "0")} 篇笔记</span>
       </div>
     </div>
     ${heroArt()}
@@ -219,26 +205,7 @@ ${principles()}
     <p class="section-lede">把笔记放回概念之间：点一个节点，看看它依赖什么、延伸到哪里，以及哪些问题还没有写。</p>
     ${renderMap({ mapId: "home-map" })}
   </div>
-</section>
-<section class="closing">
-  <div class="wrap closing-inner">
-    <div class="closing-copy">
-      <p class="section-label"><span>04</span>ABOUT</p>
-      <h2>这是一个<br><em>公开的</em>思考练习。</h2>
-      <p>不追逐更新频率，也不假装完整。只是在把一些问题想得更清楚之后，把过程留下来。</p>
-      <div class="hero-actions">
-        <a class="button button-solid" href="${url("/about/")}">关于本站 ${icon("arrowRight", 17)}</a>
-        <a class="button button-quiet" href="${url("/resources/")}">资源清单</a>
-      </div>
-    </div>
-    <div class="closing-stats">
-      <div class="stat"><strong>${String(posts.length).padStart(2, "0")}</strong><span>篇笔记</span></div>
-      <div class="stat"><strong>${String(concepts.length).padStart(2, "0")}</strong><span>个概念</span></div>
-      <div class="stat"><strong>${String(disciplines.length).padStart(2, "0")}</strong><span>个学科</span></div>
-    </div>
-  </div>
 </section>`;
-
   const websiteLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",

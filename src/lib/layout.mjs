@@ -11,12 +11,6 @@ export const nav = [
 
 const themeScript = `(function(){try{var k='fa-theme';var s=localStorage.getItem(k);var d=window.matchMedia('(prefers-color-scheme: dark)').matches;var t=(s==='light'||s==='dark')?s:(d?'dark':'light');document.documentElement.dataset.theme=t;document.documentElement.classList.add('js');}catch(e){document.documentElement.classList.add('js');}})();`;
 
-function socialLink(social) {
-  const href = social.href.startsWith("/") ? url(social.href) : social.href;
-  const external = /^https?:/i.test(href);
-  return `<a class="social-link" href="${escapeHtml(href)}" aria-label="${escapeHtml(social.label)}"${external ? ' target="_blank" rel="noopener me"' : ""}>${icon(social.icon, 17)}<span>${escapeHtml(social.label)}</span></a>`;
-}
-
 function header(active) {
   const links = nav
     .map(
@@ -72,56 +66,14 @@ function searchModal() {
 </div>`;
 }
 
-function footer() {
-  const socials = config.socials.map(socialLink).join("");
-  const github = config.socials.find((social) => social.icon === "github");
-  const contactHref = config.author.email ? `mailto:${config.author.email}` : github?.href || url("/about/");
-  const contactLabel = config.author.email || "在 GitHub 找到我";
+function footer(dateIso, dateLabel) {
   return `<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-top">
-      <div>
-        <p class="footer-kicker">STILL CURIOUS</p>
-        <h2 class="footer-title">保持好奇，<br>也保持<em>怀疑</em>。</h2>
-      </div>
-      <div class="footer-contact">
-        <p>有想法，或者只是想聊聊？</p>
-        <a class="footer-mail" href="${escapeHtml(contactHref)}"${contactHref.startsWith("http") ? ' target="_blank" rel="noopener me"' : ""}>${escapeHtml(contactLabel)} ${icon("arrowUpRight", 20)}</a>
-      </div>
-    </div>
-
-    <div class="footer-grid">
-      <div class="footer-brand">
-        ${brandMark(40)}
-        <p>${escapeHtml(config.description)}</p>
-        <span class="footer-est">EST. ${escapeHtml(config.established)} · ${escapeHtml(config.tagline)}</span>
-      </div>
-      <div class="footer-col">
-        <p class="footer-label">浏览</p>
-        ${nav.map((item) => `<a href="${url(item.href)}">${item.label}</a>`).join("")}
-        <a href="${url("/rss.xml")}">RSS 订阅</a>
-      </div>
-      <div class="footer-col">
-        <p class="footer-label">连接</p>
-        ${config.socials.map((social) => {
-          const href = social.href.startsWith("/") ? url(social.href) : social.href;
-          const external = /^https?:/i.test(href);
-          return `<a href="${escapeHtml(href)}"${external ? ' target="_blank" rel="noopener me"' : ""}>${escapeHtml(social.label)}</a>`;
-        }).join("")}
-      </div>
-      <div class="footer-col footer-note">
-        <p class="footer-label">本站</p>
-        <p>用 Markdown 写作，由一段小型静态生成器编译，托管在 GitHub Pages。</p>
-        <a class="footer-source" href="${url("/about/#colophon")}">制作说明 ${icon("arrowRight", 14)}</a>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <span>© ${new Date().getFullYear()} ${escapeHtml(config.author.name)}</span>
-      <span>${escapeHtml(config.author.location)}</span>
-      <a href="#top" class="footer-top-link">回到顶部 ${icon("arrowUp", 14)}</a>
-    </div>
-    <div class="footer-wordmark" aria-hidden="true">${escapeHtml(config.wordmark)}</div>
+  <div class="wrap footer-minimal">
+    <p class="footer-signature">Fortune-Arterial</p>
+    <p class="footer-updated">
+      <span>LAST UPDATED</span>
+      <time datetime="${escapeHtml(dateIso)}">${escapeHtml(dateLabel)}</time>
+    </p>
   </div>
 </footer>
 ${searchModal()}`;
@@ -142,6 +94,15 @@ export function layout({
   const desc = description || config.description;
   const canonical = abs(path);
   const ogImage = abs("/og.png");
+  const dateParts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const datePart = (type) => dateParts.find((part) => part.type === type)?.value || "";
+  const dateIso = `${datePart("year")}-${datePart("month")}-${datePart("day")}`;
+  const dateLabel = dateIso.replaceAll("-", ".");
 
   const structured = jsonLd
     ? `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>`
@@ -187,7 +148,7 @@ ${structured}
 <a class="skip-link" href="#main">跳到正文</a>
 ${header(active)}
 <main id="main">${content}</main>
-${footer()}
+${footer(dateIso, dateLabel)}
 <script src="${url("/assets/site.js")}" defer></script>
 </body>
 </html>`;
