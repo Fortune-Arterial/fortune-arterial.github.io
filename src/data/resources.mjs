@@ -4,8 +4,8 @@ export const resourceGroups = [
     label: "数学分析",
     labelEn: "Mathematical Analysis",
     en: "MATHEMATICAL ANALYSIS",
-    note: "从 ε–δ 到一致收敛，几本适合反复翻、每次只读一章的书。",
-    noteEn: "From ε–δ to uniform convergence: books to revisit, one chapter at a time.",
+    note: "用严密的逻辑重塑对“无穷”的直觉，让每一步极限推导都有理有据。",
+    noteEn: "Rebuild your intuition for the infinite with rigorous logic, so every limit is justified step by step.",
     items: [
     ],
   },
@@ -54,5 +54,14 @@ export const resourceGroups = [
         tag: "tool",
       },
     ],
+  },
+  {
+    id: "latex",
+    label: "LaTeX 模板",
+    labelEn: "LaTeX template",
+    en: "LATEX TEMPLATE",
+    note: "本站笔记使用的XeLaTeX模板，可直接下载源文件。",
+    noteEn: "The XeLaTeX template used for these notes; download the source files directly.",
+    items: [],
   },
 ];

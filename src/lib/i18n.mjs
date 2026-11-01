@@ -217,7 +217,7 @@ const zh = {
     kicker: "资源",
     title: "资源",
     description: "数学分析、高等代数与解析几何的书桌：教材、几何工具与写作工具。",
-    tags: { analysis: "数学分析", algebra: "高等代数", geometry: "解析几何", tool: "工具" },
+    tags: { analysis: "数学分析", algebra: "高等代数", geometry: "解析几何", tool: "工具", template: "模板" },
   },
   notFound: {
     kicker: "404 / NOT FOUND",
@@ -395,7 +395,7 @@ const en = {
     kicker: "Resources",
     title: "Resources",
     description: "A desk for mathematical analysis, higher algebra and analytic geometry: textbooks, geometry tools and writing tools.",
-    tags: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", tool: "Tool" },
+    tags: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", tool: "Tool", template: "Template" },
   },
   notFound: {
     kicker: "404 / NOT FOUND",
