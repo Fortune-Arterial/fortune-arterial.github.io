@@ -80,7 +80,7 @@ $$
 
 There are only two differences: the punctured condition becomes a neighbourhood that includes $a$, and the limit value is replaced by the function value. That also explains a common misconception: having a limit is not the same as being continuous; the function can have a hole punched out at $a$, or be given a new value there.
 
-## Uniform continuity: δ may no longer depend on x
+## Uniform continuity: $\delta$ may no longer depend on $x$
 
 Continuity is pointwise. Each $a$ may have its own $\delta(a,\varepsilon)$. If $\delta$ is moved in front of $x$,
 
