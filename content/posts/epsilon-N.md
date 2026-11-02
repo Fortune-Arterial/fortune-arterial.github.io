@@ -1,111 +1,161 @@
 ---
-title: "ε–N 到底在说什么"
-subtitle: "把「无限接近」翻译成量词顺序"
-date: "2026-10-28"
+title: "Young 不等式：积分与反函数"
+subtitle: "从积分恒等式到含参最值"
+date: "2026-11-02"
 category: "数学分析"
-tags: ["极限", "ε–δ", "量词", "连续"]
-concepts: ["derivative", "limit"]
-excerpt: "极限的定义难，不难在 ε 和 δ，而难在「对任意」与「存在」的先后顺序；把量词读对，定义就不再神秘。"
+tags: ["Young不等式", "积分", "反函数", "含参不等式", "求导"]
+concepts: ["derivative"]
+excerpt: "Young 不等式把定积分与反函数积分联系起来；证明的关键是先看等号情形，再把一般情形化为含参函数的最小值问题。"
 draft: false
 ---
 
-## 一句话直觉
+## 题目
 
-极限说的是：只要 $x$ 离 $a$ 足够近，$f(x)$ 就会离 $L$ 足够近。问题在于“足够近”对不同的人、不同的误差要求，含义并不一样。ε–δ 的作用，是把它变成一句可以逐字检查的话。
-
-## 把“接近”写成量词
-
-设 $f$ 在 $a$ 的某个去心邻域内有定义。我们说 $f$ 在 $a$ 处的极限是 $L$，记作
+::: note Young 不等式
+设 \(y=f(x)\) 是 \([0,+\infty)\) 上严格单调增加的连续函数，且 \(f(0)=0\)，记它的反函数为 \(\displaystyle x=f^{-1}(y)\)。证明：
 
 $$
-\lim_{x\to a} f(x)=L,
+\int_0^a f(x)\,\mathrm{d}x+\int_0^b f^{-1}(y)\,\mathrm{d}y\ge ab\quad(a>0,\ b>0).
 $$
-
-它的完整定义是
-
-$$
-\forall \varepsilon>0\ \exists \delta>0\ \forall x\in\mathbb{R}
-\big(0<|x-a|<\delta \Rightarrow |f(x)-L|<\varepsilon\big).
-$$
-
-这句话可以按顺序读成四步：
-
-1. 任给一个误差上限 $\varepsilon>0$；
-2. 我都能找到一个距离上限 $\delta>0$；
-3. 使得对任意一个 $x$；
-4. 只要 $x$ 落在 $a$ 的去心 $\delta$ 邻域里，$f(x)$ 就落在 $L$ 的 $\varepsilon$ 邻域里。
-
-关键是第 1、2 步的先后。$\delta$ 是在 $\varepsilon$ 给定之后才选的，所以它可以依赖 $\varepsilon$；通常写成 $\delta=\delta(\varepsilon)$。如果把两个量词对调，
-
-$$
-\exists \delta>0\ \forall \varepsilon>0\ \forall x\ \big(0<|x-a|<\delta \Rightarrow |f(x)-L|<\varepsilon\big),
-$$
-
-就要求同一个 $\delta$ 同时适应所有 $\varepsilon$。这比极限定义强得多：它逼着 $f$ 在整个去心邻域里恒等于 $L$。极限不需要这么强。
-
-## 一个可以算的例子
-
-取 $f(x)=2x+1$，$a=3$。直觉上极限是 $7$。验证时，对任意 $\varepsilon>0$，取
-
-$$
-\delta=\frac{\varepsilon}{2}.
-$$
-
-那么当 $0<|x-3|<\delta$ 时，
-
-$$
-|f(x)-7|=|2x+1-7|=2|x-3|<2\delta=\varepsilon.
-$$
-
-这里的 $\delta$ 确实依赖 $\varepsilon$：要求越严，$\delta$ 越小。定义不要求找到“最好的” $\delta$，只要求存在一个够用的。
-
-::: note 去心邻域
-条件写成 $0<|x-a|$，意味着 $x=a$ 这一点被排除在外。极限只关心 $a$ 附近发生了什么，不关心 $f(a)$ 是否有定义、等于多少。
 :::
 
-## 连续只多了一步
+## 解答与分析
 
-如果 $f$ 在 $a$ 处有定义，并且
+先给出参考书上的解答，再分析这个答案是怎样想出来的。
 
-$$
-\lim_{x\to a} f(x)=f(a),
-$$
+### 参考解答
 
-就说 $f$ 在 $a$ 处连续。把极限定义代进去，连续可以写成
+先证当 \(b=f(a)\) 时等号成立。
 
-$$
-\forall \varepsilon>0\ \exists \delta>0\ \forall x
-\big(|x-a|<\delta \Rightarrow |f(x)-f(a)|<\varepsilon\big).
-$$
-
-差别只有两个：去心条件变成了包含 $a$ 的邻域，极限值换成了函数值。这也解释了一个常见误解：极限存在并不等于连续；函数可以在 $a$ 处被挖掉，或者被重新定义一个值。
-
-## 一致连续：δ 不能再依赖 $x$
-
-连续是逐点说的。对每个 $a$，都可以有自己的 $\delta(a,\varepsilon)$。如果把 $\delta$ 提到 $x$ 前面，
+将区间 \([0,a]\) 作划分：\(0=x_0<x_1<\cdots<x_{n-1}<x_n=a\)，记 \(y_i=f(x_i)\) \((i=0,1,2,\cdots,n)\)，则 \(0=y_0<y_1<\cdots<y_{n-1}<y_n=b\)。再记 \(\Delta x_i=x_i-x_{i-1}, \Delta y_i=y_i-y_{i-1}\)，于是
 
 $$
-\forall \varepsilon>0\ \exists \delta>0\ \forall x,y
-\big(|x-y|<\delta \Rightarrow |f(x)-f(y)|<\varepsilon\big),
+\begin{aligned}
+\sum_{i=1}^n f(x_{i-1})\Delta x_i + \sum_{i=1}^n f^{-1}(y_i)\Delta y_i
+&= \sum_{i=1}^n y_{i-1}(x_i-x_{i-1}) + \sum_{i=1}^n x_i(y_i-y_{i-1}) \\
+&= x_n y_n - x_0 y_0 = ab,
+\end{aligned}
 $$
 
-就得到一致连续：同一个 $\delta$ 要对整个定义域里的所有点同时有效。
-
-$f(x)=x^2$ 在 $\mathbb{R}$ 上连续，但不一致连续。给定 $\varepsilon=1$，无论取多小的 $\delta$，只要让 $x$ 很大、$y=x+\delta/2$，就有
+记 \(\lambda = \max\limits_{1\le i\le n}\{\Delta x_i\}\)，当 \(\lambda\to 0\) 时，
 
 $$
-|y^2-x^2|=\delta\left|x+\frac{\delta}{2}\right|,
+\sum_{i=1}^n f(x_{i-1})\Delta x_i + \sum_{i=1}^n f^{-1}(y_i)\Delta y_i
 $$
 
-它随 $x$ 增大而没有上界。把定义域换成 $[0,1]$，同样的函数就一致连续了：有界闭区间上的连续函数自动一致连续。
+的极限为
 
-## 边界
+$$
+\int_0^a f(x)\,\mathrm{d}x + \int_0^b f^{-1}(y)\,\mathrm{d}y,
+$$
 
-ε–δ 定义是一个局部定义。它只说 $a$ 附近的行为，不承诺 $f$ 在别处如何；它也不要求 $f(a)$ 有定义。若把 $\mathbb{R}$ 换成别的定义域，比如有理数或复数，量词里的 $x$ 也要跟着换。
+这就证明了当 \(b=f(a)\) 时，
 
-最后，极限存在比连续弱，连续比可导弱。$f(x)=|x|$ 在 $0$ 处连续但不可导；$f(x)=1/x$ 在 $0$ 处连极限都不存在。把这些包含关系记清楚，比背下定义本身更有用。
+$$
+\int_0^a f(x)\,\mathrm{d}x + \int_0^b f^{-1}(y)\,\mathrm{d}y = ab.
+$$
 
-## 参考文献
+在一般情况下，设
 
-- Walter Rudin, *Principles of Mathematical Analysis*, 3rd ed., McGraw-Hill, 1976.
-- Terence Tao, *Analysis I*, 3rd ed., Springer, 2016.
+$$
+F(a) = \int_0^a f(x)\,\mathrm{d}x + \int_0^b f^{-1}(y)\,\mathrm{d}y - ab,
+$$
+
+则 \(F'(a) = f(a) - b\)。记 \(f(T) = b\)，可知当 \(0<a<T\) 时，\(F(a)\) 单调减少；当 \(a>T\) 时，\(F(a)\) 单调增加，所以 \(F(a)\) 在 \(a=T\) 处取到最小值。由上面的讨论可知最小值 \(F(T)=0\)，从而 \(F(a)\ge 0\)，这就是所要证明的。
+
+### 分析：从高中含参不等式看思路
+
+事实上，本题的想法源自高中做过的含参不等式证明。先看高中题目：
+
+对任意 \(x>0\)，任意实数 \(a\)，证明不等式
+
+$$
+x-\mathrm{e}^a\ln x+a\mathrm{e}^a-a-1\ge 0
+$$
+
+恒成立。
+
+先固定 \(a\)，把 \(x\) 看成变量。令
+
+$$
+F(x)=x-\mathrm{e}^a\ln x+a\mathrm{e}^a-a-1\quad (x>0).
+$$
+
+求导得
+
+$$
+F'(x)=1-\frac{\mathrm{e}^a}{x}=\frac{x-\mathrm{e}^a}{x}.
+$$
+
+因为 \(\mathrm{e}^a>0\)，所以：
+
+- 当 \(0<x<\mathrm{e}^a\) 时，\(F'(x)<0\)，\(F(x)\) 单调递减；
+- 当 \(x>\mathrm{e}^a\) 时，\(F'(x)>0\)，\(F(x)\) 单调递增。
+
+因此 \(F(x)\) 在
+
+$$
+x=\mathrm{e}^a
+$$
+
+处取得最小值。代入 \(x=\mathrm{e}^a\)，得最小值
+
+$$
+F_{\min}
+=\mathrm{e}^a-\mathrm{e}^a\ln(\mathrm{e}^a)+a\mathrm{e}^a-a-1.
+$$
+
+因为 \(\ln(\mathrm{e}^a)=a\)，所以
+
+$$
+F_{\min}
+=\mathrm{e}^a-\mathrm{e}^a\cdot a+a\mathrm{e}^a-a-1
+=\mathrm{e}^a-a-1.
+$$
+
+接下来把最小值看成关于 \(a\) 的函数：
+
+$$
+\varphi(a)=\mathrm{e}^a-a-1.
+$$
+
+对 \(a\) 求导：
+
+$$
+\varphi'(a)=\mathrm{e}^a-1.
+$$
+
+此时
+
+- 当 \(a<0\) 时，\(\varphi'(a)<0\)；
+- 当 \(a>0\) 时，\(\varphi'(a)>0\)。
+
+所以 \(\varphi(a)\) 在 \(a=0\) 处取得最小值：
+
+$$
+\varphi(0)=\mathrm{e}^0-0-1=0.
+$$
+
+因此
+
+$$
+\varphi(a)=\mathrm{e}^a-a-1\ge 0.
+$$
+
+故对任意 \(x>0\)，任意实数 \(a\)，都有
+
+$$
+F(x)\ge F_{\min}=\varphi(a)\ge 0.
+$$
+
+即
+
+$$
+x-\mathrm{e}^a\ln x+a\mathrm{e}^a-a-1\ge 0
+$$
+
+恒成立。
+
+现在回到本题。在此之前，需要明确题中 \(b\) 须属于 \(f\) 的值域；例如 \(f(x)=1-\mathrm{e}^{-x}\) 符合所列条件，但当 \(b\ge 1\) 时题中反函数积分无定义。以下在 \(b\) 属于值域时证明。
+
+我们发现，要证明的不等式其实就是一个关于参变量 \(a,b\) 的不等式，只是披上了定积分的外壳。因此本质与高中习题一致：对 \(a\) 求导，便能得到最小值在 \(f(a)=b\) 时取得。因此答案先分析了 \(f(a)=b\) 时的情形；分析清楚后，再通过求导将问题归结为 \(f(a)=b\) 这一情形。
