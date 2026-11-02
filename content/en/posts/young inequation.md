@@ -1,105 +1,105 @@
 ---
-title: "Young 不等式：积分与反函数"
-subtitle: "从积分恒等式到含参最值"
+title: "Young's Inequality: Integrals and Inverse Functions"
+subtitle: "From an Integral Identity to a Parametric Minimum"
 date: "2026-11-02"
-category: "数学分析"
-tags: ["Young不等式", "积分", "反函数", "含参不等式", "求导"]
+category: "Mathematical Analysis"
+tags: ["Young's inequality", "integral", "inverse function", "parametric inequality", "differentiation"]
 concepts: ["derivative"]
-excerpt: "Young 不等式把定积分与反函数积分联系起来；证明的关键是先看等号情形，再把一般情形化为含参函数的最小值问题。"
+excerpt: "Young's inequality connects a definite integral with the integral of an inverse function; the key is to first examine the equality case and then reduce the general case to a minimum problem for a function with a parameter."
 draft: false
 ---
 
-## 题目
+## Problem
 
-::: note Young 不等式
-设 $y=f(x)$ 是 $[0,+\infty)$上严格单调增加的连续函数，且 $f(0)=0$，记它的反函数为 $\displaystyle x=f^{-1}(y)$。证明：
+::: note Young's Inequality
+Let \(y=f(x)\) be a strictly increasing continuous function on \([0,+\infty)\) with \(f(0)=0\), and let its inverse function be \(\displaystyle x=f^{-1}(y)\). Prove that
 
 $$
 \int_0^a f(x)\,\mathrm{d}x+\int_0^b f^{-1}(y)\,\mathrm{d}y\ge ab\quad(a>0,\ b>0).
 $$
 :::
 
-## 解答与分析
+## Solution and Analysis
 
-先给出参考书上的解答，再分析这个答案是怎样想出来的。
+First, we present the solution from the reference book, and then analyze how this answer is discovered.
 
-### 参考解答
+### Reference Solution
 
-先证当 $b=f(a)$ 时等号成立。
+First prove that equality holds when \(b=f(a)\).
 
-将区间 $[0,a]$ 作划分：$0=x_0<x_1<\cdots<x_{n-1}<x_n=a$，记 $y_i=f(x_i)$ $(i=0,1,2,\cdots,n)$，则 $0=y_0<y_1<\cdots<y_{n-1}<y_n=b$。再记 $\Delta x_i=x_i-x_{i-1}, \Delta y_i=y_i-y_{i-1}$，于是
+Partition the interval \([0,a]\) as \(0=x_0<x_1<\cdots<x_{n-1}<x_n=a\), and set \(y_i=f(x_i)\) \((i=0,1,2,\cdots,n)\). Then \(0=y_0<y_1<\cdots<y_{n-1}<y_n=b\). Also set \(\Delta x_i=x_i-x_{i-1}\) and \(\Delta y_i=y_i-y_{i-1}\). Then
 
 $$
 \begin{aligned}
 \sum_{i=1}^n f(x_{i-1})\Delta x_i + \sum_{i=1}^n f^{-1}(y_i)\Delta y_i
 &= \sum_{i=1}^n y_{i-1}(x_i-x_{i-1}) + \sum_{i=1}^n x_i(y_i-y_{i-1}) \\
-&= x_n y_n - x_0 y_0 = ab,
+&= x_n y_n - x_0 y_0 = ab.
 \end{aligned}
 $$
 
-记 $\lambda = \max\limits_{1\le i\le n}\{\Delta x_i\}$，当 $\lambda\to 0$ 时，
+Let \(\lambda = \max\limits_{1\le i\le n}\{\Delta x_i\}\). As \(\lambda\to 0\),
 
 $$
 \sum_{i=1}^n f(x_{i-1})\Delta x_i + \sum_{i=1}^n f^{-1}(y_i)\Delta y_i
 $$
 
-的极限为
+tends to
 
 $$
-\int_0^a f(x)\,\mathrm{d}x + \int_0^b f^{-1}(y)\,\mathrm{d}y,
+\int_0^a f(x)\,\mathrm{d}x + \int_0^b f^{-1}(y)\,\mathrm{d}y.
 $$
 
-这就证明了当 $b=f(a)$ 时，
+This proves that when \(b=f(a)\),
 
 $$
 \int_0^a f(x)\,\mathrm{d}x + \int_0^b f^{-1}(y)\,\mathrm{d}y = ab.
 $$
 
-在一般情况下，设
+In the general case, define
 
 $$
-F(a) = \int_0^a f(x)\,\mathrm{d}x + \int_0^b f^{-1}(y)\,\mathrm{d}y - ab,
+F(a) = \int_0^a f(x)\,\mathrm{d}x + \int_0^b f^{-1}(y)\,\mathrm{d}y - ab.
 $$
 
-则 $F'(a) = f(a) - b$。记 $f(T) = b$，可知当 $0<a<T$ 时，$F(a)$单调减少；当 $a>T$ 时，$F(a)$ 单调增加，所以 $F(a)$ 在 $a=T$ 处取到最小值。由上面的讨论可知最小值 \(F(T)=0\)，从而 \(F(a)\ge 0\)，这就是所要证明的。
+Then \(F'(a) = f(a) - b\). Let \(f(T) = b\). It follows that \(F(a)\) is monotonically decreasing for \(0<a<T\) and monotonically increasing for \(a>T\). Hence \(F(a)\) attains its minimum at \(a=T\). From the discussion above, the minimum value is \(F(T)=0\), and therefore \(F(a)\ge 0\). This is precisely what was to be proved.
 
-### 分析：从高中含参不等式看思路
+### Analysis: Insight from High School Parametric Inequalities
 
-事实上，本题的想法源自高中做过的含参不等式证明。先看高中题目：
+In fact, the idea behind this problem comes from the parametric inequalities we frequently encountered in high school. Consider the following high school problem:
 
-对任意 $x>0$，任意实数 $a$，证明不等式
+For any \(x>0\) and any real number \(a\), prove that the inequality
 
 $$
 x-\mathrm{e}^a\ln x+a\mathrm{e}^a-a-1\ge 0
 $$
 
-恒成立。
+always holds.
 
-先固定 $a$，把 $x$ 看成变量。令
+First fix \(a\) and regard \(x\) as the variable. Let
 
 $$
 F(x)=x-\mathrm{e}^a\ln x+a\mathrm{e}^a-a-1\quad (x>0).
 $$
 
-求导得
+Differentiating gives
 
 $$
 F'(x)=1-\frac{\mathrm{e}^a}{x}=\frac{x-\mathrm{e}^a}{x}.
 $$
 
-因为 $\mathrm{e}^a>0$，所以：
+Since \(\mathrm{e}^a>0\), we have:
 
-- 当 $0<x<\mathrm{e}^a$ 时，$F'(x)<0$，$F(x)$ 单调递减；
-- 当 $x>\mathrm{e}^a$ 时，$F'(x)>0$，$F(x)$ 单调递增。
+- When \(0<x<\mathrm{e}^a\), \(F'(x)<0\), so \(F(x)\) is monotonically decreasing;
+- When \(x>\mathrm{e}^a\), \(F'(x)>0\), so \(F(x)\) is monotonically increasing.
 
-因此 $F(x)$ 在$x=\mathrm{e}^a$处取得最小值。代入 $x=\mathrm{e}^a$，得最小值
+Therefore \(F(x)\) attains its minimum at \(x=\mathrm{e}^a\). Substituting \(x=\mathrm{e}^a\), we obtain the minimum value
 
 $$
 F_{\min}
 =\mathrm{e}^a-\mathrm{e}^a\ln(\mathrm{e}^a)+a\mathrm{e}^a-a-1.
 $$
 
-因为 $\ln(\mathrm{e}^a)=a$，所以
+Since \(\ln(\mathrm{e}^a)=a\), we get
 
 $$
 F_{\min}
@@ -107,32 +107,49 @@ F_{\min}
 =\mathrm{e}^a-a-1.
 $$
 
-接下来把最小值看成关于 \(a\) 的函数：$\varphi(a)=\mathrm{e}^a-a-1$.对 $a$ 求导：
+Next, regard the minimum value as a function of \(a\):
+
+$$
+\varphi(a)=\mathrm{e}^a-a-1.
+$$
+
+Differentiating with respect to \(a\) gives
 
 $$
 \varphi'(a)=\mathrm{e}^a-1.
 $$
 
-此时
+At this point,
 
-- 当 $a<0$ 时，$\varphi'(a)<0$；
-- 当 $a>0$ 时，$\varphi'(a)>0$。
+- When \(a<0\), \(\varphi'(a)<0\);
+- When \(a>0\), \(\varphi'(a)>0\).
 
-所以 $\varphi(a)$ 在 $a=0$ 处取得最小值：
+Therefore \(\varphi(a)\) attains its minimum at \(a=0\):
 
 $$
 \varphi(0)=\mathrm{e}^0-0-1=0.
 $$
 
-因此 $\varphi(a)=\mathrm{e}^a-a-1\ge 0.$
-故对任意 $x>0$，任意实数 $a$，都有
+Hence
+
+$$
+\varphi(a)=\mathrm{e}^a-a-1\ge 0.
+$$
+
+Thus, for any \(x>0\) and any real number \(a\), we have
 
 $$
 F(x)\ge F_{\min}=\varphi(a)\ge 0.
 $$
 
-即 $x-\mathrm{e}^a\ln x+a\mathrm{e}^a-a-1\ge 0$恒成立。
+That is,
 
-现在回到本题。在此之前，需要明确题中 $b$ 须属于 $f$ 的值域；例如 $f(x)=1-\mathrm{e}^{-x}$ 符合所列条件，但当 $b\ge 1$ 时题中反函数积分无定义。所以我们在 $b$ 属于值域时进行证明。
+$$
+x-\mathrm{e}^a\ln x+a\mathrm{e}^a-a-1\ge 0
+$$
 
-我们发现，要证明的不等式其实就是一个关于参变量 $a,b$ 的不等式，只是披上了定积分的外壳。因此本质与高中习题一致：对 $a$ 求导，便能得到最小值在 $f(a)=b$ 时取得。因此答案先分析了 $f(a)=b$ 时的情形；分析清楚后，再通过求导将问题归结为 $f(a)=b$ 这一情形。
+always holds.
+
+Now let us return to the original problem. Before proceeding, we need to make clear that \(b\) must belong to the range of \(f\). For example, \(f(x)=1-\mathrm{e}^{-x}\) satisfies the stated conditions, but when \(b\ge 1\), the integral of the inverse function in the problem is undefined. Therefore, we prove the result under the assumption that \(b\) belongs to the range.
+
+We observe that the inequality to be proved is actually an inequality involving the parameters \(a\) and \(b\), merely dressed in the notation of definite integrals. Therefore, its essence is the same as the high school exercise: differentiating with respect to \(a\) shows that the minimum is attained when \(f(a)=b\). For this reason, the solution first analyzes the case \(f(a)=b\); once this case is understood, differentiation reduces the general problem to the case \(f(a)=b\).
