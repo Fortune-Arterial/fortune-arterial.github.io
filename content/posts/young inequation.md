@@ -99,7 +99,7 @@ F_{\min}
 =\mathrm{e}^a-\mathrm{e}^a\ln(\mathrm{e}^a)+a\mathrm{e}^a-a-1.
 $$
 
-因为 \(\ln(\mathrm{e}^a)=a\)，所以
+因为 $\ln(\mathrm{e}^a)=a$，所以
 
 $$
 F_{\min}
@@ -124,14 +124,14 @@ $$
 \varphi(0)=\mathrm{e}^0-0-1=0.
 $$
 
-因此$\varphi(a)=\mathrm{e}^a-a-1\ge 0.$
+因此 $\varphi(a)=\mathrm{e}^a-a-1\ge 0.$
 故对任意 $x>0$，任意实数 $a$，都有
 
 $$
 F(x)\ge F_{\min}=\varphi(a)\ge 0.
 $$
 
-即$x-\mathrm{e}^a\ln x+a\mathrm{e}^a-a-1\ge 0$恒成立。
+即 $x-\mathrm{e}^a\ln x+a\mathrm{e}^a-a-1\ge 0$恒成立。
 
 现在回到本题。在此之前，需要明确题中 $b$ 须属于 $f$ 的值域；例如 $f(x)=1-\mathrm{e}^{-x}$ 符合所列条件，但当 $b\ge 1$ 时题中反函数积分无定义。以下在 $b$ 属于值域时证明。
 
