@@ -4,7 +4,7 @@ subtitle: "把「无限接近」翻译成量词顺序"
 date: "2026-10-28"
 category: "数学分析"
 tags: ["极限", "ε–δ", "量词", "连续"]
-concepts: ["limit", "derivative"]
+concepts: ["derivative", "limit"]
 excerpt: "极限的定义难，不难在 ε 和 δ，而难在「对任意」与「存在」的先后顺序；把量词读对，定义就不再神秘。"
 draft: false
 ---
