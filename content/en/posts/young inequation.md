@@ -2,7 +2,7 @@
 title: "Young's Inequality: Integrals and Inverse Functions"
 subtitle: "From an Integral Identity to a Parametric Minimum"
 date: "2026-11-02"
-category: "Mathematical Analysis"
+category: "数学分析"
 tags: ["Young's inequality", "integral", "inverse function", "parametric inequality", "differentiation"]
 concepts: ["derivative"]
 excerpt: "Young's inequality connects a definite integral with the integral of an inverse function; the key is to first examine the equality case and then reduce the general case to a minimum problem for a function with a parameter."
