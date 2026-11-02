@@ -57,7 +57,7 @@ export function altPath(path = "/") {
 }
 
 const zh = {
-  brandSub: "笔记",
+  brandSub: "",
   nav: { notes: "笔记", map: "知识地图", resources: "资源", about: "关于" },
   homeLabel: "首页",
   skip: "跳到正文",
@@ -248,7 +248,7 @@ const zh = {
 };
 
 const en = {
-  brandSub: "notes",
+  brandSub: "",
   nav: { notes: "Notes", map: "Knowledge map", resources: "Resources", about: "About" },
   homeLabel: "Home",
   skip: "Skip to content",
